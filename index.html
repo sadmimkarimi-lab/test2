@@ -661,30 +661,34 @@
   const container = document.getElementById("game-container");
   const rect = container.getBoundingClientRect();
 
-  const maxWidth = 480;          // حداکثر عرض مثل قبل
-  const targetRatio = 1.4;       // نسبت ارتفاع به عرض (کارت خوشگل، نه خیلی دراز)
+  const maxWidth = 420;      // عرض کارت بازی
+  const ratio = 1.55;        // نسبت ایده‌آل = نه دراز، نه کوتاه
 
   // عرض بازی
   w = Math.min(rect.width, maxWidth);
 
-  // ارتفاع ایده‌آل بر اساس نسبت
-  let idealHeight = w * targetRatio;   // مثلا اگر w=360 → h≈504
+  // ارتفاع ایده‌آل
+  let idealHeight = w * ratio;
 
-  // ارتفاع نهایی: از ارتفاع کانتینر بیشتر نشه
+  // اگر فضای واقعی کمتر بود، همان را بگیر
   h = Math.min(idealHeight, rect.height);
 
+  // ست کردن بوم
   canvas.width = w;
   canvas.height = h;
 
-  // اگر بازی قبلاً ساخته شده، پد و توپ رو به جای درستشون ببریم
+  // هماهنگ‌سازی پد و توپ
   if (paddle && ball) {
-    paddle.y = h - 40;                 // پد همیشه 40px از پایین
+    paddle.y = h - 45;
+
     if (paddle.x + paddle.w > w) {
       paddle.x = w - paddle.w;
     }
+    if (paddle.x < 0) paddle.x = 0;
+
     if (ball.stuckToPaddle) {
       ball.x = paddle.x + paddle.w / 2;
-      ball.y = paddle.y - ball.r - 1;
+      ball.y = paddle.y - ball.r - 2;
     }
   }
 }
