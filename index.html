@@ -3,9 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <title>بازی بدشکن طاویتا</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- ادامهٔ کدهای خودت -->
   <!-- فونت فارسی -->
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
+    html, body{
+  height:100%;
+}
+    
     *{
       margin:0;
       padding:0;
@@ -13,14 +21,17 @@
       font-family:'Vazirmatn',sans-serif;
     }
     body{
-      background:#111533;
-      color:#fff;
-      display:flex;
-      flex-direction:column;
-      height:100vh;
-      overflow:hidden;
-      transition:background .2s ease,color .2s ease;
-    }
+  background:#111533;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  /* به‌جای height:100vh; این خط رو گذاشتیم */
+  min-height:100vh;
+  /* فقط اسکرول عمودی آزاد باشه */
+  overflow-x:hidden;
+  overflow-y:auto;
+  transition:background .2s ease,color .2s ease;
+}
 
     /* تم روشن */
     body.light-mode{
@@ -146,14 +157,15 @@
       border:1px solid #374151;
       box-shadow:0 0 8px rgba(0,0,0,.35);
     }
-
-    #game-container{
-      flex:1;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 10px 10px;
-    }
+#game-container{
+  width:100%;
+  height:100%;
+  flex-grow:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0;
+}
     canvas{
       background:#141947;
       border-radius:14px;
@@ -391,7 +403,11 @@
     <div id="hint">با انگشت پَد را حرکت بده و عادت‌های بد را بشکن 💫</div>
   </div>
 
-  <!-- نوار پایین: شاپ، درباره ما، تمرین روزانه (حالا زیر پیام) -->
+  <div id="game-container">
+    <canvas id="game"></canvas>
+  </div>
+
+  <!-- نوار پایین: شاپ، درباره ما، تمرین روزانه -->
   <div id="bottom-bar">
     <div id="bottom-left">
       <button id="aboutBtn" class="btn">درباره ما</button>
@@ -411,12 +427,6 @@
       </div>
     </div>
   </div>
-
-  <div id="game-container">
-    <canvas id="game"></canvas>
-  </div>
-
-  
 
   <!-- پاپ‌آپ نام کاربر -->
   <div id="nameOverlay" class="overlay">
@@ -1506,7 +1516,7 @@
     }
     requestAnimationFrame(loop);
  </script>
-<script src="eitaa.js"></script>
+<script src="/api/eitaa.js"></script>
   
 </body>
 </html>
