@@ -80,19 +80,23 @@
   display:flex;
   align-items:center;
   justify-content:space-between;
-  direction:rtl;
+  /* قبلاً rtl بود، این رو بکن ltr تا جای آیتم‌ها جابه‌جا بشه */
+  direction:ltr;
   gap:10px;
 }
 
+/* خود دکمه‌ها و عنوان همچنان راست‌به‌چپ بمونن */
 #header-left{
   display:flex;
   gap:8px;
+  direction:rtl;
 }
 
 #header-right{
   display:flex;
   align-items:center;
   gap:8px;
+  direction:rtl;
 }
 
 #gameLogo{
