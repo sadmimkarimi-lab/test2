@@ -20,18 +20,18 @@
       font-family:'Vazirmatn',sans-serif;
     }
 
-    /* ✅ بدنه: بدون اسکرول عمودی، تمام ارتفاع صفحه */
-    body{
-      background:#111533;
-      color:#fff;
-      display:flex;
-      flex-direction:column;
-      height:100vh;
-      min-height:100vh;
-      overflow-x:hidden;
-      overflow-y:hidden;
-      transition:background .2s ease,color .2s ease;
-    }
+    /* ✅ بدنه: ریسپانسیو مثل بازی کلمات – اجازه‌ی اسکرول، نه قفل کامل */
+body{
+  background:#111533;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;     /* فقط حداقل، نه قفل‌شدن */
+  height:auto;
+  overflow-x:hidden;
+  overflow-y:auto;      /* اسکرول عمودی آزاد مثل بازی کلمات */
+  transition:background .2s ease,color .2s ease;
+}
 
     /* تم روشن */
     body.light-mode{
