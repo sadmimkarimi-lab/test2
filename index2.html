@@ -194,18 +194,15 @@
       box-shadow:0 0 8px rgba(0,0,0,.35);
     }
 
-    /* ✅ کانتینر بازی: ارتفاع متناسب با صفحه */
-  #game-container{
-      width:100%;
-      flex-grow:1;
-      display:flex;
-      align-items:flex-start;   /* کارت بازی از بالا شروع می‌شود */
-      justify-content:center;
-      padding:0;
-      height:calc(100vh - 140px);
-      max-height:calc(100vh - 140px);
+    /* ✅ کانتینر بازی: همیشه فضای باقی‌مانده صفحه را پر می‌کند */
+#game-container{
+  width:100%;
+  flex:1;                   /* هرچی از قدِ صفحه می‌مونه، برای بازی */
+  display:flex;
+  align-items:center;       /* وسط عمودی */
+  justify-content:center;   /* وسط افقی */
+  padding:0 10px 6px;
 }
-
     canvas{
       background:#141947;
       border-radius:14px;
@@ -409,6 +406,14 @@
       margin-top:6px;
       line-height:1.8;
     }
+
+    /* ✅ تنظیمات اضافه برای دسکتاپ */
+@media (min-width: 992px){
+  #game-container{
+    max-width:900px;
+    margin:0 auto;
+  }
+}
   </style>
 </head>
 <body>
@@ -598,7 +603,8 @@
 
   <script>
     const canvas = document.getElementById("game");
-    const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
+const gameContainer = document.getElementById("game-container");
     const scoreEl = document.getElementById("scoreEl");
     const levelEl = document.getElementById("levelEl");
     const livesEl = document.getElementById("livesEl");
@@ -656,21 +662,49 @@
         slowBallTicks=0,burstTicks=0,totalBricksLevel=0,
         totalBrokenHabits=0;
 
-    // ✅ نسخه اصلاح‌شده‌ی resizeCanvas
-    function resizeCanvas() {
-  const maxWidth = 480;   // حداکثر عرض روی دسکتاپ
-  const ratio    = 1.2;   // نسبت ارتفاع به عرض (یه مستطیل خوش‌فرم)
 
-  // عرض بازی: تا حد ممکن عرض موبایل، ولی بیشتر از 480 نشه
-  w = Math.min(window.innerWidth - 24, maxWidth);
 
-  // ارتفاع بازی بر اساس عرض، تا کشیده نشه
-  h = Math.round(w * ratio);
+// ✅ نسخه ریسپانسیو برای وب‌ویو موبایل و دسکتاپ
+function resizeCanvas() {
+  const container = gameContainer || canvas.parentElement;
+
+  // اگر به هر دلیل ارتفاع صفر بود (مثلاً هنوز رندر نشده بود)
+  const containerStyles = window.getComputedStyle(container);
+  const paddingX =
+    parseFloat(containerStyles.paddingLeft) +
+    parseFloat(containerStyles.paddingRight);
+  const paddingY =
+    parseFloat(containerStyles.paddingTop) +
+    parseFloat(containerStyles.paddingBottom);
+
+  let availableWidth  = container.clientWidth  - paddingX;
+  let availableHeight = container.clientHeight - paddingY;
+
+  // fallback اگر هنوز height صفر بود
+  if (availableHeight <= 0) {
+    availableHeight = (window.innerHeight || document.documentElement.clientHeight) - 180;
+  }
+
+  const maxWidth = 520;   // روی دسکتاپ از این بیشتر نشود
+  const ratio    = 1.2;   // نسبت ارتفاع به عرض
+
+  // ابتدا بر اساس عرض
+  let width  = Math.min(availableWidth, maxWidth);
+  let height = width * ratio;
+
+  // اگر قد جا نشد، از ارتفاع تنظیم می‌کنیم
+  if (height > availableHeight) {
+    height = availableHeight;
+    width  = height / ratio;
+  }
+
+  w = width;
+  h = height;
 
   canvas.width  = w;
   canvas.height = h;
 
-  // وقتی پد و توپ آماده شدن، پایین بوم تنظیم‌شون کن
+  // جای پد و توپ را نسبت به اندازه جدید تنظیم کن
   if (paddle && ball) {
     paddle.y = h - 50;
 
@@ -689,7 +723,6 @@
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 window.addEventListener("orientationchange", resizeCanvas);
-
     // تم روز/شب
     let currentTheme = "dark";
     function applyTheme(mode){
