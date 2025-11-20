@@ -73,7 +73,39 @@
       background:#f97316;
       color:#111827;
     }
+/* هدر بالای صفحه: لوگو + عنوان + دکمه‌ها */
+#header-bar{
+  width:100%;
+  padding:6px 10px 4px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  direction:rtl;
+  gap:10px;
+}
 
+#header-left{
+  display:flex;
+  gap:8px;
+}
+
+#header-right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+#gameLogo{
+  width:36px;
+  height:36px;
+  border-radius:999px;
+  object-fit:cover;
+}
+
+#gameTitle{
+  font-size:18px;
+  font-weight:700;
+}
     #top-bar{
       width:100%;
       padding:4px 10px;
@@ -372,6 +404,23 @@
   </style>
 </head>
 <body>
+  <!-- هدر: لوگو + عنوان + دکمه‌های شاپ/درباره -->
+  <div id="header-bar">
+    <div id="header-left">
+      <button id="aboutBtn" class="btn">درباره ما</button>
+      <button id="shopBtn" class="btn btn-shop">شاپ</button>
+    </div>
+    <div id="header-right">
+      <img
+        id="gameLogo"
+        src="https://cdnfa.com/irangiah/a9be/uploads/bazi/picsart-25-11-14-07-34-00-477.webp"
+        alt="لوگوی طاویتا"
+      />
+      <span id="gameTitle">بازی بدشکن طاویتا</span>
+    </div>
+  </div>
+
+  <!-- نوار وضعیت: جان / امتیاز / مرحله + دکمه‌ها -->
   <div id="top-bar">
     <!-- چپ: جان | امتیاز | مرحله -->
     <div id="top-left">
