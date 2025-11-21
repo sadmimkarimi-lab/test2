@@ -1,971 +1,1527 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>توپ‌بارون</title>
-
+  <title>بازی هوشیتا</title>
   <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Vazirmatn',sans-serif;
-}
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "IRANSans", sans-serif;
+    }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #f5f7ff, #eef2ff);
+      color: #222;
+    }
+    .app {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
 
-body{
-  background:#0f0d33;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  overflow-x:hidden;
-}
+    .card {
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
 
-/* ───────── ردیف بالایی: منو + لوگو ───────── */
+    /* هدر با گرادینت دلبرتر (کمی پررنگ‌تر) */
+    .header-card {
+      background: linear-gradient(135deg, #d4d4ff, #fecdd3);
+    }
 
-#top-bar{
-  width:100%;
-  max-width:900px;
-  padding:12px 16px 4px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-}
+    /* -------- هدر -------- */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-/* چپ: شاپ + درباره ما */
-#top-left{
-  display:flex;
-  gap:10px;
-}
-.topBtn{
-  border:none;
-  padding:8px 16px;
-  font-size:14px;
-  border-radius:999px;
-  cursor:pointer;
-  color:#fff;
-  background:#ff8c00;
-  box-shadow:0 0 6px rgba(0,0,0,.4);
-  white-space:nowrap;
-}
-#aboutBtn{
-  background:#1abc9c;
-}
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      justify-content: center;
+    }
 
-/* راست: لوگو + عنوان */
-#top-right{
-  display:flex;
-  justify-content:flex-end;
-  flex:1;
-}
-#logoArea{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  direction:rtl;
-}
-#gameLogo{
-  width:48px;
-  height:48px;
-  border-radius:999px;
-  object-fit:cover;
-  box-shadow:0 0 8px rgba(0,0,0,.5);
-}
-#gameTitle{
-  font-size:20px;
-  font-weight:800;
-  white-space:nowrap;
-}
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-/* ───────── ردیف وضعیت: BEST / LVL / امتیاز / دکمه‌ها ───────── */
+    .pill-btn {
+      border: 1px solid #e5e7eb;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      background: #eef2ff;
+      color: #0f172a;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      white-space: nowrap;
+    }
+    .pill-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+      background: #e0e7ff;
+    }
 
-#status-bar{
-  width:100%;
-  max-width:900px;
-  padding:0 16px 8px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+    .logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 3px solid #ffffff;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.18);
+      background: #fff;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-#status-inner{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:16px;
-  flex-wrap:nowrap;
-}
+    .header-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-start;
+      text-align: right;
+    }
 
-#stats-row{
-  display:flex;
-  gap:10px;
-  font-size:14px;
-  white-space:nowrap;
-}
+    .header-title h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+    .header-title p {
+      margin: 0;
+      font-size: 13px;
+      color: #6b7280;
+    }
 
-#scoreLabel{
-  font-size:20px;
-  font-weight:700;
-  white-space:nowrap;
-}
+    .user-box {
+      padding: 6px 10px;
+      border-radius: 12px;
+      background: #f4f4ff;
+      font-size: 12px;
+      display: flex;
+      gap: 12px;
+      color: #4b5563;
+    }
+    .user-box span {
+      font-weight: 600;
+      color: #111827;
+    }
 
-#icons-row{
-  display:flex;
-  gap:8px;
-}
-.iconBtn{
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:18px;
-  background:#262a7a;
-  color:#fff;
-  border:none;
-  box-shadow:0 0 5px rgba(0,0,0,.4);
-  cursor:pointer;
-}
+    /* -------- نوار وضعیت زیر هدر -------- */
+    .status-bar {
+      display: flex;
+      gap: 8px;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      padding: 6px 10px;
+      align-items: center;
+    }
+    .status-pill {
+      flex: 1;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 13px;
+      background: #f4f4ff;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: default;
+      white-space: nowrap;
+    }
+    .status-pill.clickable {
+      cursor: pointer;
+      background: linear-gradient(135deg, #f97316, #facc15);
+      color: #111827;
+      font-weight: 600;
+    }
 
-/* ───────── بازی / کانواس ───────── */
+    /* -------- کارت‌های بازی (۲ در ۳) -------- */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
 
-#game-container{
-  width:100%;
-  max-width:900px;
-  flex:1;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:0 12px;
-}
+    .game-card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .game-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+    }
+    .game-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+    .game-card-body {
+      padding: 10px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .game-card-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+    }
+    .game-card-sub {
+      font-size: 12px;
+      color: #6b7280;
+      min-height: 30px;
+    }
+    .game-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      margin-top: 4px;
+      color: #4b5563;
+    }
+    .game-card-footer button {
+      border: none;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 11px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      cursor: pointer;
+    }
 
-canvas{
-  width:100%;
-  max-width:420px;      /* بازی پهن‌تر روی موبایل */
-  background:#16103f;
-  border-radius:14px;
-  box-shadow:0 0 18px rgba(0,0,0,.7);
-  margin-top:8px;
-}
+    .game-card.locked {
+      filter: grayscale(1);
+      opacity: 0.7;
+      cursor: default;
+    }
+    .game-card.locked .lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(15, 23, 42, 0.6), transparent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f9fafb;
+      font-size: 13px;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .lock-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
 
+    /* -------- صفحه‌ی بازی -------- */
+    .hidden {
+      display: none !important;
+    }
 
+    .game-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
 
-#hint-bar{
-  width:100%;
-  max-width:900px;
-  padding:8px 16px 0;
-  display:flex;
-  justify-content:center;
-}
+    .back-btn {
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 6px 14px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #374151;
+      order: 1;
+    }
 
-#hint{
-  width:100%;
-  background:#111827;
-  padding:10px 14px;
-  border-radius:12px;
-  font-size:14px;
-  direction:rtl;
-  text-align:right;
-  opacity:.95;
-}
+    .game-title-area {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      order: 0;
+    }
+    .game-main-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
+      color: #111827;
+    }
+    .game-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin: 2px 0 0;
+    }
 
-/* ───────── پاپ‌آپ‌ها ───────── */
+    .game-top-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .stat-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eef2ff;
+      font-size: 11px;
+      color: #4b5563;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-pill.heart-pill {
+      background: #ffe4e6;
+      color: #b91c1c;
+    }
+    .stat-pill.star-pill {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .stat-pill.timer-pill {
+      background: #fee2e2;
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .stat-pill .icon {
+      font-size: 22px;
+    }
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:10;
-}
+    .bounce {
+      animation: bounce 0.45s ease;
+    }
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      35%  { transform: scale(1.35); }
+      100% { transform: scale(1); }
+    }
+    .shake {
+      animation: shake 0.45s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
 
-.box{
-  background:#1e124f;
-  padding:16px;
-  border-radius:16px;
-  width:90%;
-  max-width:380px;
-  text-align:right;
-  direction:rtl;
-  font-size:13px;
-  line-height:1.7;
-  color:#f9fafb;
-  box-shadow:0 0 18px rgba(0,0,0,.8);
-  position:relative;
-}
+    .coach-row {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .coach-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: 0 6px 18px rgba(79, 70, 229, 0.25);
+    }
+    .coach-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .coach-bubble {
+      flex: 1;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #374151;
+    }
 
-.box h3{
-  margin-bottom:8px;
-  font-size:16px;
-}
+    /* --------- این بخش فقط برای ردیف سؤال + آواتار بازیکن است --------- */
+    .qa-row {
+      margin-top: 16px;
+      display: flex;
+      align-items: stretch;
+      gap: 16px;
+    }
 
-.closeBtn{
-  width:100%;
-  border:none;
-  padding:7px 14px;
-  border-radius:999px;
-  background:#4444aa;
-  color:#fff;
-  margin-top:10px;
-  cursor:pointer;
-  box-shadow:0 0 8px rgba(0,0,0,.5);
-}
-.closeBtn:active{
-  transform:scale(.97);
-}
+    .player-avatar {
+      flex-shrink: 0;
+      width: 32%;
+      max-width: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      order: 1;   /* آواتار سمت چپ */
+    }
+    .player-avatar img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
 
-/* آیتم‌های شاپ */
-.shopItem{
-  background:#24145f;
-  padding:8px;
-  border-radius:10px;
-  margin:6px 0;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:13px;
-  transition:transform .15s ease, box-shadow .15s ease;
-}
-.shopItem span{
-  display:block;
-}
-.shopItem button{
-  padding:4px 10px;
-  border:0;
-  border-radius:999px;
-  background:#ff8c00;
-  color:white;
-  cursor:pointer;
-  font-size:11px;
-}
-.shopItem.bought{
-  transform:scale(1.03);
-  box-shadow:0 0 14px rgba(46,204,113,.8);
-}
+    .qa-main {
+      flex: 1;
+      max-width: 68%;
+      display: flex;
+      flex-direction: column;
+      order: 0;  /* سوال و گزینه‌ها سمت راست */
+    }
 
-#shopMessage{
-  position:absolute;
-  top:4px;
-  left:12px;
-  font-size:11px;
-  color:#2ecc71;
-  opacity:0;
-  pointer-events:none;
-}
-.shopMessageVisible{
-  animation:shopFlash 1s ease-out forwards;
-}
-@keyframes shopFlash{
-  0%{opacity:0;transform:translateY(-4px);}
-  20%{opacity:1;transform:translateY(0);}
-  80%{opacity:1;}
-  100%{opacity:0;transform:translateY(-6px);}
-}
+    @media (max-width: 480px) {
+      .player-avatar {
+        width: 38%;
+        max-width: 120px;
+      }
+      .qa-main {
+        max-width: 62%;
+      }
+      .question-block {
+        font-size: 14px;
+      }
+    }
+    /* --------------------------------------------------------------- */
 
-/* دکمه لینک در درباره‌ما */
-.linkButton{
-  display:inline-block;
-  margin-top:10px;
-  padding:6px 14px;
-  border-radius:999px;
-  text-decoration:none;
-  font-size:12px;
-  background:#1abc9c;
-  color:#fff;
-  box-shadow:0 0 10px rgba(0,0,0,.5);
-}
+    .question-block {
+      margin-top: 18px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #111827;
+      background: linear-gradient(135deg,#ffffff,#eef2ff);
+      padding: 12px 14px;
+      border-radius: 18px;
+      box-shadow: 0 8px 18px rgba(15,23,42,0.08);
+    }
 
-/* ───────── موبایل ───────── */
+    .options {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .option-btn {
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 10px 14px;
+      font-size: 14px;
+      background: #f9fafb;
+      color: #111827;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.14s ease, transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04);
+    }
+    .option-btn:hover {
+      background: #e5e7eb;
+      border-color: #c7d2fe;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+    .option-btn.correct {
+      background: #bbf7d0;
+      color: #065f46;
+      border-color: #4ade80;
+    }
+    .option-btn.wrong {
+      background: #fecaca;
+      color: #7f1d1d;
+      border-color: #fca5a5;
+    }
 
-@media(max-width:480px){
-  #gameLogo{width:42px;height:42px;}
-  #gameTitle{font-size:18px;}
-  canvas{max-width:330px;}
-  #scoreLabel{font-size:18px;}
-  .topBtn{padding:6px 12px;font-size:13px;}
-  #status-inner{gap:10px;}
-}
-</style>
+    .progress-bar-wrap {
+      margin-top: 14px;
+      height: 14px;
+      width: 100%;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      box-shadow: inset 0 0 4px rgba(15,23,42,0.2);
+    }
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #4ade80);
+      transition: width 0.25s ease;
+    }
+    .stage-label {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #6b7280;
+      text-align: left;
+    }
+
+    /* -------- فوتر -------- */
+    footer {
+      margin-top: 16px;
+      padding-bottom: 4px;
+    }
+    .footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      color: #6b7280;
+    }
+    .footer-row a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer-row a:hover {
+      text-decoration: underline;
+    }
+    .restart-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 11px;
+      background: linear-gradient(135deg, #fb7185, #f97316);
+      color: #fff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* -------- پاپ‌آپ عمومی -------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 16px 18px;
+      max-width: 320px;
+      width: 90%;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.3);
+      font-size: 13px;
+    }
+    .modal h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+    .modal p {
+      margin: 4px 0;
+      color: #4b5563;
+      line-height: 1.7;
+      white-space: pre-line;
+    }
+    .modal-close {
+      margin-top: 10px;
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 8px 0;
+      font-size: 13px;
+      background: #4f46e5;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* -------- پاپ‌آپ شروع (نام + کاراکتر) -------- */
+    .onboard-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+    }
+    .onboard-backdrop.active {
+      display: flex;
+    }
+    .onboard-modal {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 18px 20px;
+      max-width: 360px;
+      width: 92%;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.35);
+      font-size: 13px;
+      text-align: right;
+    }
+    .onboard-modal h3 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+    .onboard-modal p {
+      margin: 4px 0 10px;
+      color: #4b5563;
+      line-height: 1.7;
+    }
+    .onboard-input {
+      width: 100%;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .avatar-choices {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .avatar-choice {
+      border-radius: 16px;
+      border: 2px solid transparent;
+      padding: 4px;
+      background: #f9fafb;
+      cursor: pointer;
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+    }
+    .avatar-choice img {
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    .avatar-choice.selected {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.25);
+    }
+    .onboard-confirm {
+      margin-top: 4px;
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 9px 0;
+      font-size: 14px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
 </head>
-
 <body>
+<div class="app">
 
-  <!-- ردیف بالا: شاپ / درباره + لوگو / عنوان -->
-  <div id="top-bar">
-    <div id="top-left">
-      <button id="shopBtn" class="topBtn">شاپ</button>
-      <button id="aboutBtn" class="topBtn">درباره ما</button>
-    </div>
-
-    <div id="top-right">
-      <div id="logoArea">
-        <img
-          id="gameLogo"
-          src="https://cdnfa.com/irangiah/a9be/uploads/bazi/picsart-25-11-14-07-34-00-477.webp"
-          alt="توپ‌بارون"
-        />
-        <div id="gameTitle">توپ‌بارون</div>
+  <!-- هدر -->
+  <div class="card header-card">
+    <div class="header">
+      <!-- راست: لوگو، عنوان، کاربر -->
+      <div class="header-right">
+        <div class="logo">
+          <img src="https://cdnfa.com/irangiah/a9be/uploads/bazi/picsart-25-11-14-07-34-00-477.webp" alt="لوگو تاویتا">
+        </div>
+        <div class="header-title-wrap">
+          <div class="header-title">
+            <h1>بازی هوشیتا</h1>
+            <p>ذهنت رو به چالش بکش...</p>
+          </div>
+          <div class="user-box">
+            <div>نام کاربر: <span id="userName">الهه</span></div>
+            <div>امتیاز کل: <span id="totalStars">0</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- چپ: راهنما و درباره -->
+      <div class="header-left">
+        <button class="pill-btn" id="helpBtn">راهنمای بازی</button>
+        <button class="pill-btn" id="aboutBtn">درباره تاویتا</button>
       </div>
     </div>
   </div>
 
-  <!-- ردیف وضعیت: BEST / LVL / امتیاز / آیکون‌ها -->
-  <div id="status-bar">
-  <div id="status-inner">
-    <div id="stats-row">
-      <span>BEST: <span id="bestScore">0</span></span>
-      <span>LVL: <span id="levelLabel">1</span></span>
+  <!-- نوار وضعیت -->
+  <div class="card status-bar">
+    <div class="status-pill clickable" id="achievementsBtn">
+      <span>🏆 دستاوردها</span>
+    </div>
+    <div class="status-pill">
+      بازی فعلی: <span id="currentGameLabel">-</span>
+    </div>
+    <div class="status-pill">
+      مرحله: <span id="currentStageLabel">-</span>
+    </div>
+  </div>
+
+  <!-- فهرست بازی‌ها -->
+  <div class="card" id="gamesScreen">
+    <div class="games-grid" id="gamesGrid"></div>
+  </div>
+
+  <!-- صفحه‌ی بازی -->
+  <div class="card hidden" id="gameScreen">
+    <div class="game-header-row">
+      <div class="game-title-area">
+        <h2 class="game-main-title" id="gameTitle"></h2>
+        <p class="game-subtitle" id="gameSubtitle"></p>
+      </div>
+      <button class="back-btn" id="backToListBtn">بازگشت به فهرست</button>
     </div>
 
-    <div id="scoreLabel">
-      امتیاز: <span id="currentScore">0</span>
+    <div class="game-top-stats">
+      <div class="stat-pill star-pill" id="starStat">
+        <span class="icon">⭐</span>
+        <span>امتیاز:</span>
+        <span id="gameStars">0</span>
+      </div>
+      <div class="stat-pill heart-pill" id="heartStat">
+        <span class="icon">❤️</span>
+        <span>جان:</span>
+        <span id="heartsCount">3</span>
+      </div>
+      <div class="stat-pill timer-pill">
+        ⏱ زمان باقیمانده:
+        <span id="timerValue">-- ثانیه</span>
+      </div>
     </div>
 
-    <div id="icons-row">
-      <button id="soundBtn" class="iconBtn">🔊</button>
-      <button id="pauseBtn" class="iconBtn">⏸</button>
+    <div class="coach-row">
+      <div class="coach-avatar">
+        <img id="coachImg" src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-13-10-261.png" alt="تاویتا">
+      </div>
+      <div class="coach-bubble" id="coachText">
+        آروم باش، با دقت جواب بده. ببینیم چقدر می‌تونی جلو بری.
+      </div>
     </div>
+
+    <!-- ردیف آواتار بازیکن + سوال و گزینه‌ها -->
+    <div class="qa-row">
+      <div class="player-avatar">
+        <img id="playerAvatar" src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-36-511.png" alt="آواتار بازیکن">
+      </div>
+      <div class="qa-main">
+        <div class="question-block" id="questionText"></div>
+        <div class="options" id="optionsContainer"></div>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-inner" id="progressInner"></div>
+    </div>
+    <div class="stage-label" id="stageLabelBottom"></div>
+  </div>
+
+  <!-- فوتر -->
+  <footer>
+    <div class="footer-row">
+      <button class="restart-btn" id="restartBtn">شروع مجدد بازی</button>
+      <div>
+        این برنامه توسط تاویتا ساخته شده.
+        <a href="https://eitaa.com/tavita" target="_blank">ورود به کانال تاویتا</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- پاپ‌آپ‌ها -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal" id="modalBox">
+    <h3 id="modalTitle">عنوان</h3>
+    <p id="modalBody">متن پاپ‌آپ اینجاست.</p>
+    <button class="modal-close" id="modalCloseBtn">باشه</button>
   </div>
 </div>
 
- <div id="bottom-bar">
-    <div id="hint">برای هدف‌گیری لمس کن و زاویه را انتخاب کن 🎯</div>
-  </div>
-  
-  <!-- بازی -->
-  <div id="game-container">
-    <canvas id="game"></canvas>
-  </div>
+<!-- پاپ‌آپ شروع (نام + کاراکتر) -->
+<div class="onboard-backdrop" id="onboardBackdrop">
+  <div class="onboard-modal">
+    <h3>شروع بازی هوشیتا 🎮</h3>
+    <p>اول اسمت رو بنویس و یکی از کاراکترهای تاویتا رو انتخاب کن. هر وقت برگشتی، از همین‌جا ادامه می‌دی.</p>
+    <input id="onboardNameInput" class="onboard-input" type="text" placeholder="مثلاً الهه">
 
-  
+    <div class="avatar-choices">
+      <button type="button" class="avatar-choice selected"
+              data-avatar="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-36-511.png">
+        <img src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-36-511.png" alt="کاراکتر ۱">
+      </button>
 
-  <!-- شاپ -->
-  <div id="shopOverlay" class="overlay">
-    <div class="box" id="shopBox">
-      <h3>فروشگاه توپ‌بارون 🎁</h3>
-      <div id="shopMessage"></div>
+      <button type="button" class="avatar-choice"
+              data-avatar="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-14-607.png">
+        <img src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-14-607.png" alt="کاراکتر ۲">
+      </button>
 
-      <div class="shopItem" data-item-row="balls">
-        <span>+3 توپ دائمی</span>
-        <span>قیمت: 450 امتیاز</span>
-        <button data-item="balls">خرید</button>
-      </div>
+      <button type="button" class="avatar-choice"
+              data-avatar="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-55-52-957.png">
+        <img src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-55-52-957.png" alt="کاراکتر ۳">
+      </button>
 
-      <div class="shopItem" data-item-row="damage">
-        <span>افزایش قدرت توپ (لِوِل +1)</span>
-        <span>قیمت: 750 امتیاز</span>
-        <button data-item="damage">خرید</button>
-      </div>
-
-      <div class="shopItem" data-item-row="bomb">
-        <span>افزایش احتمال بلوک بمب 💣</span>
-        <span>قیمت: 600 امتیاز</span>
-        <button data-item="bomb">خرید</button>
-      </div>
-
-      <button class="closeBtn" id="closeShop">بستن</button>
+      <button type="button" class="avatar-choice"
+              data-avatar="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-12-45-646.png">
+        <img src="https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-12-45-646.png" alt="کاراکتر ۴">
+      </button>
     </div>
+
+    <button id="onboardConfirmBtn" class="onboard-confirm">بزن بریم 😍</button>
   </div>
+</div>
 
-  <!-- درباره ما -->
-  <div id="aboutOverlay" class="overlay">
-    <div class="box">
-      <h3>درباره طاویتا</h3>
-      <p>
-        طاویتا یک کانال آموزش تولید محتوا و هوش مصنوعی است که با رویکردی
-        حرفه‌ای اما صمیمی، به شما کمک می‌کند محتوای مؤثر، خلاق و
-        درآمدزا بسازید.
-      </p>
-      <p>
-        در کنار آموزش، تیم طاویتا انجام پروژه‌های تخصصی مثل ساخت ویدئو،
-        طراحی بازی، تولید محتوای شبکه‌های اجتماعی و اجرای ایده‌های
-        خلاقانه را نیز می‌پذیرد.
-      </p>
-      <p>
-        برای همراهی با طاویتا و دیدن آموزش‌ها و پروژه‌ها، می‌توانید از
-        طریق لینک زیر عضو کانال شوید:
-      </p>
-      <a class="linkButton" href="https://eitaa.com/tavita" target="_blank">
-        ورود به کانال طاویتا در ایتا
-      </a>
-      <button class="closeBtn" id="closeAbout">بستن</button>
-    </div>
-  </div>
+<script>
+  // -------- داده‌های بازی‌ها --------
+  const gamesData = [
+    {
+      id: 1,
+      title: "بازی ۱ - هوش و منطق",
+      subtitle: "سوال‌های عددی و منطقی؛ از متوسط تا خیلی سخت.",
+      teaser: "آماده‌ای مغزت رو با اعداد و الگوها قلقلک بدی؟",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-59-27-132.png",
+      // coachImg قبلی فعلاً دیگر استفاده نمی‌شود، مربی از coachStates می‌آید
+      coachImg: "",
+      timePerStageSec: 8,
+      locked: false,
+      stages: [
+        { q: "اگر ۲،۴،۶،۸... ادامه پیدا کند، عدد بعدی؟", options: ["۱۰","۱۲","۹"], correct: 0 },
+        { q: "عدد میانی بین ۵ و ۹؟", options: ["۴","۷","۱۰"], correct: 1 },
+        { q: "جمع ۸ و ۷؟", options: ["۱۵","۱۴","۱۶"], correct: 0 },
+        { q: "در ۳،۶،۹،۱۲... عدد بعدی؟", options: ["۱۳","۱۵","۱۸"], correct: 1 },
+        { q: "باقی‌ماندهٔ ۷ ÷ ۲؟", options: ["۱","۲","۳"], correct: 0 },
 
-  <!-- گیم‌اور -->
-  <div id="gameOverOverlay" class="overlay">
-    <div class="box" id="gameOverBox">
-      <h3>پایان بازی 🎮</h3>
-      <p id="gameOverScoreText">امتیاز شما: 0</p>
-      <p id="gameOverBestText" style="font-size:12px;opacity:.85;"></p>
-      <p style="font-size:12px;opacity:.9;">می‌تونی دوباره تلاش کنی و رکورد خودت رو بشکنی 😎</p>
-      <button class="closeBtn" id="retryBtn">دوباره تلاش کن</button>
-    </div>
-  </div>
+        { q: "اگر x + ۳ = ۷ باشد، مقدار x؟", options: ["۳","۴","۵"], correct: 1 },
+        { q: "در دنبالهٔ ۱۰،۲۰،۳۰... عدد بعدی؟", options: ["۴۰","۳۵","۲۵"], correct: 0 },
+        { q: "کدام عدد فرد است؟", options: ["۸","۹","۱۰"], correct: 1 },
+        { q: "کدام عدد زوج است؟", options: ["۱۱","۱۳","۱۴"], correct: 2 },
+        { q: "عدد میانی بین ۲ و ۸؟", options: ["۳","۵","۷"], correct: 1 },
 
-  <!-- ───────────── اسکریپت بازی (همون کد خودت) ───────────── -->
-  <script>
-    const canvas = document.getElementById("game");
-    const ctx = canvas.getContext("2d");
+        { q: "کدام بزرگ‌تر است؟", options: ["۲۳","۳۲","۲۹"], correct: 1 },
+        { q: "کدام کوچک‌تر است؟", options: ["۴۵","۴۰","۳۸"], correct: 2 },
+        { q: "اگر ۳ × ? = ۱۵، عدد مجهول؟", options: ["۵","۴","۶"], correct: 0 },
+        { q: "در ۵،۱۰،۲۰،۴۰... عدد بعدی؟", options: ["۶۰","۸۰","۷۵"], correct: 1 },
+        { q: "جمع ۱۰،۱۰ و ۵؟", options: ["۲۵","۲۰","۱۵"], correct: 0 },
 
-    let baseX, baseY;
-    function resizeCanvas(){
-  const w = Math.min(window.innerWidth * 0.97, 460);  // کمی عریض‌تر
-  const h = Math.min(window.innerHeight * 0.70, 720); // قد بازی هم کمی بیشتر
-  canvas.width = w;
-  canvas.height = h;
-  baseX = canvas.width / 2;
-  baseY = canvas.height - 22;
-}
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+        { q: "اگر ۲ واحد از ۹ کم کنیم، حاصل؟", options: ["۷","۶","۸"], correct: 0 },
+        { q: "نصف عدد ۱۸؟", options: ["۹","۸","۶"], correct: 0 },
+        { q: "دو برابر عدد ۷؟", options: ["۱۴","۱۲","۱۶"], correct: 0 },
+        { q: "در ۱،۳،۵،۷... عدد بعدی؟", options: ["۸","۹","۱۱"], correct: 1 },
+        { q: "در ۲،۵،۸،۱۱... عدد بعدی؟", options: ["۱۳","۱۴","۱۵"], correct: 1 }
+      ]
+    },
+    {
+      id: 2,
+      title: "بازی ۲ - تمرکز و حافظه",
+      subtitle: "الگوها، تکرارها و تفاوت‌های ظریف؛ حواست رو جمع کن.",
+      teaser: "اگه حواست پرت بشه، سریع اشتباه می‌کنی!",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-55-52-957.png",
+      coachImg: "",
+      timePerStageSec: 10,
+      locked: true,
+      stages: [
+        { q: "در دنباله A, B, C, D... حرف بعدی؟", options: ["E","F","G"], correct: 0 },
+        { q: "در ۱،۲،۱،۲... عدد بعدی؟", options: ["۱","۲","۳"], correct: 0 },
+        { q: "در ۲،۴،۲،۴... عدد بعدی؟", options: ["۲","۴","۶"], correct: 0 },
+        { q: "در سرخ،آبی،سرخ،آبی... رنگ بعدی؟", options: ["سبز","قرمز","زرد"], correct: 1 },
+        { q: "در شنبه،یکشنبه،شنبه،یکشنبه... بعدی؟", options: ["شنبه","سه‌شنبه","جمعه"], correct: 0 },
 
-    const scoreEl = document.getElementById("currentScore");
-    const bestEl = document.getElementById("bestScore");
-    const levelLabel = document.getElementById("levelLabel");
-    const shopOverlay = document.getElementById("shopOverlay");
-    const shopBtn = document.getElementById("shopBtn");
-    const closeShopBtn = document.getElementById("closeShop");
-    const aboutOverlay = document.getElementById("aboutOverlay");
-    const aboutBtn = document.getElementById("aboutBtn");
-    const closeAboutBtn = document.getElementById("closeAbout");
-    const shopMessage = document.getElementById("shopMessage");
-    const hintEl = document.getElementById("hint");
+        { q: "در ۵،۷،۵،۷... عدد بعدی؟", options: ["۵","۶","۷"], correct: 0 },
+        { q: "در ۹،۸،۷،۶... عدد بعدی؟", options: ["۷","۵","۳"], correct: 1 },
+        { q: "در ۱،۳،۱،۳،۱... عدد بعدی؟", options: ["۱","۳","۵"], correct: 1 },
+        { q: "کدام با بقیه متفاوت است؟", options: ["کتاب","دفتر","سیب"], correct: 2 },
+        { q: "در چپ،راست،چپ،راست... بعدی؟", options: ["چپ","وسط","راست"], correct: 0 },
 
-    const pauseBtn = document.getElementById("pauseBtn");
-    const soundBtn = document.getElementById("soundBtn");
+        { q: "در ۱۰،۲۰،۱۰،۲۰... عدد بعدی؟", options: ["۱۰","۲۰","۳۰"], correct: 0 },
+        { q: "الگو: مربع،دایره،مربع... شکل بعدی؟", options: ["مثلث","دایره","مربع"], correct: 1 },
+        { q: "در ۱،۴،۷،۱۰... عدد بعدی؟", options: ["۱۳","۱۲","۱۵"], correct: 0 },
+        { q: "در ۲،۳،۵،۸... عدد بعدی؟", options: ["۱۰","۱۱","۱۲"], correct: 2 },
+        { q: "در ۲،۲،۳،۳... عدد بعدی؟", options: ["۳","۴","۲"], correct: 1 },
 
-    const gameOverOverlay = document.getElementById("gameOverOverlay");
-    const gameOverScoreText = document.getElementById("gameOverScoreText");
-    const gameOverBestText = document.getElementById("gameOverBestText");
-    const retryBtn = document.getElementById("retryBtn");
-
-    let audioCtx;
-    let isMuted = false;
-    function playBeep(freq=600, dur=0.07){
-      if(isMuted) return;
-      try{
-        if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.frequency.value = freq;
-        osc.type = "triangle";
-        gain.gain.value = 0.08;
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + dur);
-      }catch(e){}
+        { q: "در توالی ش،ی،ش،ی... حرف بعدی؟", options: ["ش","ی","س"], correct: 0 },
+        { q: "در الگوی ۱A،۲A،۳A... مورد بعدی؟", options: ["۴A","۳B","۴B"], correct: 0 },
+        { q: "در ۵،۶،۸،۱۱... عدد بعدی؟", options: ["۱۳","۱۵","۱۴"], correct: 1 },
+        { q: "در قرمز،قرمز،آبی،قرمز،قرمز... رنگ بعدی؟", options: ["آبی","قرمز","سبز"], correct: 0 },
+        { q: "در ۳،۳،۶،۶،۹،۹... عدد بعدی؟", options: ["۹","۱۲","۶"], correct: 1 }
+      ]
+    },
+    {
+      id: 3,
+      title: "بازی ۳ - علمی",
+      subtitle: "سوال‌های علمی از مدرسه تا زندگی روزمره.",
+      teaser: "ببین از علوم پایه چقدر یادت مونده.",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-58-46-211.png",
+      coachImg: "",
+      timePerStageSec: 10,
+      locked: true,
+      stages: [
+        {q:"نزدیک‌ترین سیاره به خورشید؟",options:["زهره","عطارد","مریخ"],correct:1},
+        {q:"آب در چند درجه سانتی‌گراد می‌جوشد؟",options:["۵۰","۱۰۰","۸۰"],correct:1},
+        {q:"واحد طول در دستگاه SI؟",options:["متر","ثانیه","کیلوگرم"],correct:0},
+        {q:"بیشترین گاز موجود در هوا؟",options:["اکسیژن","نیتروژن","هلیوم"],correct:1},
+        {q:"قلب انسان چند حفره دارد؟",options:["دو","سه","چهار"],correct:2},
+        {q:"زمین به دور چه می‌چرخد؟",options:["ماه","خورشید","مریخ"],correct:1},
+        {q:"کدام اندام برای تنفس است؟",options:["ریه","معده","کبد"],correct:0},
+        {q:"کدام حیوان پستاندار است؟",options:["ماهی","گربه","مار"],correct:1},
+        {q:"گیاه برای ساخت غذا به چه نیاز دارد؟",options:["نور و آب","طلا","نمک"],correct:0},
+        {q:"کدام در گروه فلزات است؟",options:["آهن","چوب","شیشه"],correct:0},
+        {q:"کدام سیاره «سیاره سرخ» است؟",options:["مریخ","زحل","مشتری"],correct:0},
+        {q:"کدام عضو، خون را پمپ می‌کند؟",options:["کبد","قلب","ریه"],correct:1},
+        {q:"آب در چند درجه سانتی‌گراد یخ می‌زند؟",options:["۰","۵","۱۰"],correct:0},
+        {q:"کدام، منبع انرژی تجدیدپذیر است؟",options:["نفت","باد","بنزین"],correct:1},
+        {q:"مغز در کدام قسمت بدن است؟",options:["جمجمه","قفسه سینه","شکم"],correct:0},
+        {q:"جهت حرکت عقربه‌های ساعت؟",options:["ساعتگرد","پادساعتگرد","تصادفی"],correct:0},
+        {q:"کدام واحد زمان است؟",options:["وات","دقیقه","متر"],correct:1},
+        {q:"کدام حیوان تخم‌گذار است؟",options:["گاو","مرغ","سگ"],correct:1},
+        {q:"کدام، مایع در دمای اتاق است؟",options:["سنگ","روغن","یخ"],correct:1},
+        {q:"کدام، حس پنج‌گانه کلاسیک نیست؟",options:["چشایی","بویایی","تعادل"],correct:2}
+      ]
+    },
+    {
+      id: 4,
+      title: "بازی ۴ - تاریخی و فرهنگی",
+      subtitle: "از ایران و جهان، از نوروز تا تخت جمشید.",
+      teaser: "هم هم‌وطن‌دوست‌ها، هم اهل فرهنگ این‌جارو دوست دارن.",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-56-36-511.png",
+      coachImg: "",
+      timePerStageSec: 12,
+      locked: true,
+      stages: [
+        {q:"پایتخت ایران؟",options:["تهران","شیراز","تبریز"],correct:0},
+        {q:"نوروز آغاز کدام فصل است؟",options:["بهار","تابستان","پاییز"],correct:0},
+        {q:"زبان رسمی ایران؟",options:["عربی","فارسی","ترکی"],correct:1},
+        {q:"حافظ بیشتر به چه شناخته می‌شود؟",options:["شاعر","نقاش","موسیقی‌دان"],correct:0},
+        {q:"تخت جمشید نزدیک کدام شهر است؟",options:["شیراز","تبریز","مشهد"],correct:0},
+        {q:"واقعه عاشورا در کجا رخ داد؟",options:["کوفه","کربلا","مدینه"],correct:1},
+        {q:"مشهد به کدام امام مشهور است؟",options:["امام رضا(ع)","امام علی(ع)","امام سجاد(ع)"],correct:0},
+        {q:"زبان قرآن؟",options:["فارسی","عربی","ترکی"],correct:1},
+        {q:"کدام شاعر ایرانی است؟",options:["مولوی","شکسپیر","گوته"],correct:0},
+        {q:"کدام رنگ در پرچم ایران نیست؟",options:["سبز","آبی","قرمز"],correct:1},
+        {q:"کدام شهر در ایران نیست؟",options:["اصفهان","بغداد","قم"],correct:1},
+        {q:"یزد به چه معماری معروف است؟",options:["بادگیر","برج شیشه‌ای","آسمان‌خراش"],correct:0},
+        {q:"کدام، بنای مذهبی معروف در ایران است؟",options:["حرم امام رضا(ع)","برج ایفل","اهرام مصر"],correct:0},
+        {q:"ایران در کدام قاره است؟",options:["آسیا","اروپا","آفریقا"],correct:0},
+        {q:"کدام، جشن ایرانی است؟",options:["کریسمس","شب یلدا","هالووین"],correct:1},
+        {q:"خط روی اسکناس‌های ایران؟",options:["لاتین","عربی-فارسی","عبری"],correct:1},
+        {q:"مرکز استان فارس؟",options:["شیراز","کرمان","ارومیه"],correct:0},
+        {q:"کدام ساز ایرانی است؟",options:["تار","پیانو","ویولن"],correct:0},
+        {q:"کدام کشور همسایه ایران است؟",options:["ژاپن","ترکیه","برزیل"],correct:1},
+        {q:"کدام، شهر مذهبی مهم در ایران است؟",options:["قم","دبی","استانبول"],correct:0}
+      ]
+    },
+    {
+      id: 5,
+      title: "بازی ۵ - ایثار و اخلاق",
+      subtitle: "رفتارهای اخلاقی، ایثار، حق‌الناس و مهربانی.",
+      teaser: "این‌جا بیشتر از مغز، با دل بازی می‌کنی.",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-58-46-211.png",
+      coachImg: "",
+      timePerStageSec: 12,
+      locked: true,
+      stages: [
+        {q:"کمک بی‌منت به دیگران یعنی:",options:["ایثار","غرور","خشم"],correct:0},
+        {q:"پنهان‌کردن عیب دیگران نشانهٔ:",options:["حیا","ترس","خودخواهی"],correct:0},
+        {q:"گفتن حقیقت، حتی وقتی سخت است، یعنی:",options:["صداقت","لجبازی","تحقیر"],correct:0},
+        {q:"بخشیدن خطای دیگران:",options:["کینه","عفو","انتقام"],correct:1},
+        {q:"کمک به نیازمند در دین:",options:["کار بی‌ارزش","عبادت","تفریح"],correct:1},
+        {q:"غیبت یعنی:",options:["تعریف‌کردن","بدگویی پشت‌سر","شوخی"],correct:1},
+        {q:"کدام رفتار اخلاقی‌تر است؟",options:["تمسخر","گوش‌دادن با احترام","بی‌توجهی"],correct:1},
+        {q:"نگهداری سالم امانت، یعنی:",options:["خیانت","امانت‌داری","ساده‌لوحی"],correct:1},
+        {q:"کدام، نزدیک‌تر به ایثار است؟",options:["ترجیح خود","ترجیح دیگران","بی‌تفاوتی"],correct:1},
+        {q:"نجات‌دادن جان دیگران:",options:["کار عادی","فداکاری","شوخی"],correct:1},
+        {q:"سر زدن به بیمار:",options:["اتلاف وقت","ثواب","مزاحمت"],correct:1},
+        {q:"دروغِ مکرر باعث:",options:["اعتماد","بی‌اعتمادی","محبت"],correct:1},
+        {q:"حق‌الناس یعنی:",options:["حق طبیعت","حق مردم","حق حیوانات"],correct:1},
+        {q:"کدام، مصداق احترام است؟",options:["قطع حرف دیگران","سلام‌کردن","بی‌جواب گذاشتن"],correct:1},
+        {q:"فریادزدن بر والدین:",options:["عادی","بی‌ادبی","شجاعت"],correct:1},
+        {q:"بخشش مال برای رضای خدا:",options:["ریا","صدقه","خساست"],correct:1},
+        {q:"کمک به خانواده شهدا:",options:["بی‌فایده","قدردانی","اشتباه"],correct:1},
+        {q:"کدام، ادب در گفتار است؟",options:["توهین","سؤال محترمانه","مسخره‌کردن"],correct:1},
+        {q:"آبرو بردن دیگران:",options:["گناه","شوخی","شجاعت"],correct:0},
+        {q:"ساکت‌ماندن و تأیید غیبت:",options:["تأیید ضمنی","مبارزه","نصیحت"],correct:0}
+      ]
+    },
+    {
+      id: 6,
+      title: "بازی ۶ - مذهبی (شیعه)",
+      subtitle: "سوال‌های دینی کوتاه بر اساس معارف شیعه.",
+      teaser: "از قرآن تا اهل‌بیت(ع)، ببین چقدر همراهی.",
+      img: "https://cdnfa.com/irangiah/a9be/uploads/new6/picsart-25-11-16-05-12-45-646.png",
+      coachImg: "",
+      timePerStageSec: 12,
+      locked: true,
+      stages: [
+        {q:"کتاب آسمانی مسلمانان:",options:["قرآن","تورات","انجیل"],correct:0},
+        {q:"ماه روزه‌داری:",options:["رمضان","محرم","رجب"],correct:0},
+        {q:"قبلهٔ مسلمانان:",options:["کعبه","مسجدالاقصی","مدینه"],correct:0},
+        {q:"امام علی(ع) چندمین امام شیعه است؟",options:["اول","دوم","سوم"],correct:0},
+        {q:"شهادت امام حسین(ع) در روز:",options:["عرفه","عاشورا","غدیر"],correct:1},
+        {q:"امام رضا(ع) در کدام شهر مدفون است؟",options:["قم","مشهد","کربلا"],correct:1},
+        {q:"امام زمان(عج) فرزند کدام امام است؟",options:["امام هادی(ع)","امام عسکری(ع)","امام جواد(ع)"],correct:1},
+        {q:"غدیر خم مربوط به ولایت چه کسی است؟",options:["امام حسین(ع)","امام علی(ع)","امام جواد(ع)"],correct:1},
+        {q:"نماز واجب روزانه چند رکعت است؟",options:["۱۷","۱۱","۱۹"],correct:0},
+        {q:"کدام، یک نماز واجب روزانه است؟",options:["صبح","وتر","عید"],correct:0},
+        {q:"کدام، یکی از ارکان اسلام است؟",options:["نماز","لباس","سفر"],correct:0},
+        {q:"زکات مربوط به:",options:["اموال","رنگ","غذا"],correct:0},
+        {q:"حج در کدام ماه قمری انجام می‌شود؟",options:["رمضان","ذی‌الحجه","صفر"],correct:1},
+        {q:"سلام‌دادن در پایان نماز:",options:["نماز را تمام می‌کند","نماز را باطل می‌کند","هیچ نقشی ندارد"],correct:0},
+        {q:"دعا یعنی:",options:["حرف‌زدن با خدا","صحبت با مردم","تفریح"],correct:0},
+        {q:"زیارت کربلا بیشتر برای:",options:["تفریح","تقویت محبت اهل‌بیت(ع)","خرید"],correct:1},
+        {q:"کدام عمل، مستحب است؟",options:["کمک به دیگران","ظلم","غیبت"],correct:0},
+        {q:"روزه یعنی:",options:["ترک خوردن و آشامیدن برای خدا","کم‌خوری معمولی","کم‌خوابیدن"],correct:0},
+        {q:"کدام، از نام‌های قرآن است؟",options:["فرقان","انجیل","زبور"],correct:0},
+        {q:"کدام، یکی از مساجد مهم اسلامی است؟",options:["مسجدالحرام","کلیسای نوتردام","معبد بودا"],correct:0}
+      ]
     }
+  ];
 
-    // وضعیت بازی
-    let balls = [];
-    let trails = [];
-    let blocks = [];
-    let powerUps = [];
-    let isAiming = false;
-    let aimX = 0, aimY = 0;
-    let score = 0, bestScore = 0;
-    let level = 1;
-    let waves = 0;
-    let numBalls = 25;
-    let damagePerHit = 1;
-    let bombChance = 0.08;
-    let turnInProgress = false;
-    let frame = 0;
-    let shake = 0;
-    let hintTimeout = null;
-    let isPaused = false;
-    let gameOver = false;
+  // -------- وضعیت کلی --------
+  const state = {
+    userName: "الهه",
+    totalStars: 0,
+    unlockedGames: new Set([1]),
+    currentGameId: null,
+    currentStage: 0,
+    hearts: 3,
+    gameStars: 0
+  };
 
-    const cols = 7;
-    const padding = 6;
+  const USER_KEY = "hoshitaUserName";
+  const AVATAR_KEY = "hoshitaAvatarUrl";
 
-    const randInt = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+  // المنت‌ها
+  const gamesGrid = document.getElementById("gamesGrid");
+  const gamesScreen = document.getElementById("gamesScreen");
+  const gameScreen = document.getElementById("gameScreen");
 
-    function pickColor(type,v){
-      if(type==="bomb") return "#a66bff";
-      if(type==="ice") return "#66d9ff";
-      if(type==="moving") return "#ffb347";
-      if(type==="armor") return "#c084ff";
-      if(v<12) return "#00bfff";
-      if(v<20) return "#8a2be2";
-      if(v<30) return "#ffd700";
-      if(v<45) return "#ff8c00";
-      return "#ff5555";
+  const userNameEl = document.getElementById("userName");
+  const totalStarsEl = document.getElementById("totalStars");
+  const currentGameLabel = document.getElementById("currentGameLabel");
+  const currentStageLabel = document.getElementById("currentStageLabel");
+
+  const gameTitleEl = document.getElementById("gameTitle");
+  const gameSubtitleEl = document.getElementById("gameSubtitle");
+  const coachImgEl = document.getElementById("coachImg");
+  const coachTextEl = document.getElementById("coachText");
+
+  const playerAvatarEl = document.getElementById("playerAvatar");
+
+  const heartsCountEl = document.getElementById("heartsCount");
+  const gameStarsEl = document.getElementById("gameStars");
+  const starStatEl = document.getElementById("starStat");
+  const heartStatEl = document.getElementById("heartStat");
+
+  const questionTextEl = document.getElementById("questionText");
+  const optionsContainer = document.getElementById("optionsContainer");
+  const progressInner = document.getElementById("progressInner");
+  const stageLabelBottom = document.getElementById("stageLabelBottom");
+  const timerValueEl = document.getElementById("timerValue");
+
+  const backToListBtn = document.getElementById("backToListBtn");
+  const restartBtn = document.getElementById("restartBtn");
+
+  const achievementsBtn = document.getElementById("achievementsBtn");
+  const helpBtn = document.getElementById("helpBtn");
+  const aboutBtn = document.getElementById("aboutBtn");
+
+  const modalBackdrop = document.getElementById("modalBackdrop");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalBody = document.getElementById("modalBody");
+  const modalCloseBtn = document.getElementById("modalCloseBtn");
+
+  // پاپ‌آپ شروع
+  const onboardBackdrop = document.getElementById("onboardBackdrop");
+  const onboardNameInput = document.getElementById("onboardNameInput");
+  const onboardConfirmBtn = document.getElementById("onboardConfirmBtn");
+  const avatarButtons = document.querySelectorAll(".avatar-choice");
+  let selectedAvatarUrl = avatarButtons[0]?.dataset.avatar || "";
+
+  // تایمر
+  let timerInterval = null;
+  let timerRemaining = 0;
+
+  // ایندکس گزینهٔ درست بعد از شافل
+  let currentCorrectIndex = 0;
+
+  // --- ۶ حالت مربی: برای هر حالت یک عکس و یک متن ---
+  // TODO: این آدرس‌ها رو بعداً با لینک‌ عکس‌های واقعی خودت عوض کن
+  const coachStates = {
+    start: {
+      img: "https://example.com/coach-start.png",
+      text: "آروم باش، با دقت جواب بده. هر مرحله که جلو بری، ستاره می‌گیری! 🌟"
+    },
+    correct: {
+      img: "https://example.com/coach-correct.png",
+      text: "آفرین! یه قدم دیگه جلو رفتی. برو بعدی 👏"
+    },
+    wrong: {
+      img: "https://example.com/coach-wrong.png",
+      text: "اشکالی نداره، دوباره تلاش کن. این‌بار دقیق‌تر نگاه کن."
+    },
+    timeout: {
+      img: "https://example.com/coach-timeout.png",
+      text: "وقتت تموم شد! این‌بار سریع‌تر جواب بده ⏱"
+    },
+    gameComplete: {
+      img: "https://example.com/coach-complete.png",
+      text: "عالی بود! همه مراحل این بازی رو رد کردی. برو سراغ بازی بعدی 💪"
+    },
+    gameOver: {
+      img: "https://example.com/coach-gameover.png",
+      text: "جان‌هات تموم شد؛ از نو شروع کن، این‌بار بهتر می‌زنی 😎"
     }
+  };
 
-    function spawnRow(){
-      const blockWidth = (canvas.width - (cols+1)*padding)/cols;
-      const blockHeight = blockWidth * .7;
-
-      for(let c=0; c<cols; c++){
-        if(Math.random() < 0.75){
-          const x = padding + c*(blockWidth+padding);
-          const y = padding;
-
-          const base = 5 + (level * 3) + (waves * 2);
-          const multiplier = 1 + (level * 0.15);
-          const spread = 5 + level * 3;
-          const val = Math.floor((base + randInt(0, spread)) * multiplier);
-
-          let type = "normal";
-          const r = Math.random();
-          const effBombChance = (bombChance + level * 0.015);
-
-          if(r < effBombChance) type = "bomb";
-          else if(r < effBombChance + 0.05) type = "ice";
-          else if(r < effBombChance + 0.10) type = "moving";
-          else if(r < effBombChance + 0.15) type = "armor";
-
-          blocks.push({
-            x, y, w:blockWidth, h:blockHeight,
-            value: val,
-            type,
-            hpExtra: type==="ice" ? 1 : (type==="armor" ? 2 : 0),
-            color: pickColor(type, val),
-            alive: true,
-            vx: type === "moving" ? (Math.random()<0.5 ? -1 : 1) * (0.7 + level * 0.1) : 0
-          });
-        }
-      }
-
-      if(Math.random() < 0.55){
-        const px = randInt(40, canvas.width - 40);
-        const py = padding + blockHeight + 12;
-        const types = ["extraBall","damageUp","bombUp"];
-        powerUps.push({x:px,y:py,r:10,type:types[randInt(0,2)],collected:false});
-      }
-    }
-
-    function moveBlocksDown(){
-      const baseRowHeight = blocks.length ? (blocks[0].h + padding) : 40;
-
-      const levelFactor = 1 + (level - 1) * 0.35;
-      const waveFactor = 1 + Math.min(waves, 15) * 0.04;
-
-      const moveAmount = baseRowHeight * levelFactor * waveFactor;
-
-      for(const b of blocks) b.y += moveAmount;
-      for(const p of powerUps) p.y += moveAmount;
-    }
-
-    function updateLabels(){
-      scoreEl.textContent = score;
-      bestEl.textContent = bestScore;
-      levelLabel.textContent = level;
-    }
-
-    function resetGame(){
-      balls=[]; trails=[]; blocks=[]; powerUps=[];
-      score=0; level=1; waves=0;
-      numBalls=25; damagePerHit=1; bombChance=0.08;
-      turnInProgress=false; frame=0;
-      shake=0; isPaused=false; gameOver=false;
-      spawnRow();
-      updateLabels();
-    }
-
-    resetGame();
-
-    function shoot(angle){
-      balls=[]; trails=[];
-      const speed = 6 + level*0.4;
-      for(let i=0;i<numBalls;i++){
-        balls.push({
-          x:baseX,y:baseY,
-          vx:Math.cos(angle)*speed,
-          vy:Math.sin(angle)*speed,
-          delay:i*2,
-          active:false,
-          returned:false
-        });
-      }
-      turnInProgress=true;
-      frame=0;
-      playBeep(650,0.09);
-    }
-
-    function getCanvasPos(evt){
-  const rect = canvas.getBoundingClientRect();
-  let clientX, clientY;
-  if(evt.touches && evt.touches[0]){
-    clientX = evt.touches[0].clientX;
-    clientY = evt.touches[0].clientY;
-  }else if(evt.changedTouches && evt.changedTouches[0]){
-    clientX = evt.changedTouches[0].clientX;
-    clientY = evt.changedTouches[0].clientY;
-  }else{
-    clientX = evt.clientX;
-    clientY = evt.clientY;
+  function setCoachState(stateKey) {
+    const cfg = coachStates[stateKey];
+    if (!cfg) return;
+    if (cfg.img) coachImgEl.src = cfg.img;
+    if (cfg.text) coachTextEl.textContent = cfg.text;
   }
-  const x = (clientX - rect.left) * (canvas.width / rect.width);
-  const y = (clientY - rect.top)  * (canvas.height / rect.height);
-  return {x,y};
-}
 
-function startAim(evt){
-  if(turnInProgress || isPaused || gameOver) return;
-  isAiming=true;
-  const p = getCanvasPos(evt);
-  aimX=p.x; aimY=p.y;
-}
+  // ---- انتخاب کاراکتر در پاپ‌آپ شروع ----
+  avatarButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      avatarButtons.forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedAvatarUrl = btn.dataset.avatar;
+    });
+  });
 
-function moveAim(evt){
-  if(!isAiming || isPaused || gameOver) return;
-  const p = getCanvasPos(evt);
-  aimX=p.x; aimY=p.y;
-}
+  function showOnboarding() {
+    onboardNameInput.value = state.userName || "";
+    onboardBackdrop.classList.add("active");
+  }
+  function hideOnboarding() {
+    onboardBackdrop.classList.remove("active");
+  }
 
-function endAim(){
-  if(!isAiming || isPaused || gameOver) return;
-  isAiming=false;
-  let angle = Math.atan2(aimY-baseY, aimX-baseX);
-  if(angle>-0.15) angle=-0.15;
-  if(angle<-Math.PI+0.15) angle=-Math.PI+0.15;
-  shoot(angle);
-}
+  onboardConfirmBtn.addEventListener("click", () => {
+    const name = onboardNameInput.value.trim() || "دوست تاویتا";
+    state.userName = name;
+    userNameEl.textContent = name;
+    try {
+      localStorage.setItem(USER_KEY, name);
+      if (selectedAvatarUrl) {
+        localStorage.setItem(AVATAR_KEY, selectedAvatarUrl);
+      }
+    } catch (e) {}
+    if (selectedAvatarUrl) {
+      playerAvatarEl.src = selectedAvatarUrl;
+    }
+    hideOnboarding();
+    renderGamesList();
+  });
 
-canvas.addEventListener("mousedown", e=>startAim(e));
-canvas.addEventListener("mousemove", e=>moveAim(e));
-canvas.addEventListener("mouseup",   ()=>endAim());
+  function initUser() {
+    try {
+      const savedName = localStorage.getItem(USER_KEY);
+      const savedAvatar = localStorage.getItem(AVATAR_KEY);
+      if (savedName) {
+        state.userName = savedName;
+        userNameEl.textContent = savedName;
+      }
+      if (savedAvatar) {
+        selectedAvatarUrl = savedAvatar;
+        playerAvatarEl.src = savedAvatar;
+      } else {
+        selectedAvatarUrl = avatarButtons[0]?.dataset.avatar || selectedAvatarUrl;
+        playerAvatarEl.src = selectedAvatarUrl;
+      }
+      if (!savedName) {
+        showOnboarding();
+      }
+    } catch (e) {
+      showOnboarding();
+    }
+  }
 
-canvas.addEventListener("touchstart", e=>{startAim(e); e.preventDefault();},{passive:false});
-canvas.addEventListener("touchmove",  e=>{moveAim(e); e.preventDefault();},{passive:false});
-canvas.addEventListener("touchend",   e=>{endAim();  e.preventDefault();},{passive:false});
-    function showShopMsg(text){
-      shopMessage.textContent = text;
-      shopMessage.classList.remove("shopMessageVisible");
-      void shopMessage.offsetWidth;
-      shopMessage.classList.add("shopMessageVisible");
+  // ---- رندر کارت‌ها ----
+  function renderGamesList() {
+    userNameEl.textContent = state.userName;
+    totalStarsEl.textContent = state.totalStars;
+
+    gamesGrid.innerHTML = "";
+    gamesData.forEach(game => {
+      const card = document.createElement("div");
+      const isUnlocked = state.unlockedGames.has(game.id) && !game.locked;
+
+      card.className = "game-card" + (isUnlocked ? "" : " locked");
+      card.innerHTML = `
+        <img src="${game.img}" alt="${game.title}">
+        <div class="game-card-body">
+          <div class="game-card-title">${game.title}</div>
+          <div class="game-card-sub">${game.teaser}</div>
+          <div class="game-card-footer">
+            <span>مراحل: <strong>${game.stages ? game.stages.length : "?"}</strong></span>
+            ${isUnlocked ? `<button type="button">چالش ذهن</button>` : ""}
+          </div>
+          ${isUnlocked ? "" : `
+          <div class="lock-overlay">
+            <div class="lock-icon">🔒</div>
+            <div>اول بازی‌های قبلی رو تمام کن</div>
+          </div>`}
+        </div>
+      `;
+      if (isUnlocked) {
+        card.addEventListener("click", () => startGame(game.id));
+      }
+      gamesGrid.appendChild(card);
+    });
+  }
+
+  // ---- شروع بازی ----
+  function startGame(gameId) {
+    const game = gamesData.find(g => g.id === gameId);
+    if (!game) return;
+
+    clearInterval(timerInterval);
+
+    state.currentGameId = gameId;
+    state.currentStage = 0;
+    state.hearts = 3;
+    state.gameStars = 0;
+
+    gameTitleEl.textContent = game.title;
+    gameSubtitleEl.textContent = game.subtitle;
+
+    // مربی: حالت شروع
+    setCoachState("start");
+
+    gamesScreen.classList.add("hidden");
+    gameScreen.classList.remove("hidden");
+
+    updateGameUi();
+  }
+
+  // ---- تایمر مرحله ----
+  function startTimerForStage(game) {
+    clearInterval(timerInterval);
+    const baseSec = game.timePerStageSec || 10;
+    timerRemaining = baseSec;
+    updateTimerLabel();
+    timerInterval = setInterval(() => {
+      timerRemaining--;
+      if (timerRemaining <= 0) {
+        clearInterval(timerInterval);
+        handleTimeout();
+      } else {
+        updateTimerLabel();
+      }
+    }, 1000);
+  }
+
+  function updateTimerLabel() {
+    timerValueEl.textContent = `${timerRemaining} ثانیه ⏳`;
+  }
+
+  // ---- آپدیت UI بازی + شافل گزینه‌ها ----
+  function updateGameUi() {
+    const game = gamesData.find(g => g.id === state.currentGameId);
+    if (!game) return;
+
+    const stageCount = game.stages.length;
+    const currentStageIndex = Math.max(0, Math.min(state.currentStage, stageCount - 1));
+    const stageData = game.stages[currentStageIndex];
+
+    currentGameLabel.textContent = game.title;
+    currentStageLabel.textContent = `${currentStageIndex + 1} از ${stageCount}`;
+
+    heartsCountEl.textContent = state.hearts.toString();
+    gameStarsEl.textContent = state.gameStars.toString();
+
+    stageLabelBottom.textContent = `مرحله ${currentStageIndex + 1} از ${stageCount}`;
+
+    const progress = (currentStageIndex / stageCount) * 100;
+    progressInner.style.width = `${progress}%`;
+
+    questionTextEl.textContent = stageData.q;
+
+    // ساخت آرایهٔ گزینه‌ها با ایندکس اصلی
+    const originalOptions = stageData.options.map((text, idx) => ({
+      text,
+      originalIndex: idx
+    }));
+
+    // کپی و شافل با فیشر–ییتس
+    const shuffled = [...originalOptions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = shuffled[i];
+      shuffled[i] = shuffled[j];
+      shuffled[j] = temp;
     }
 
-    function flashHint(text){
-      if(hintTimeout) clearTimeout(hintTimeout);
-      const old = hintEl.textContent;
-      hintEl.textContent = text;
-      hintTimeout = setTimeout(()=>{hintEl.textContent = old;}, 3000);
-    }
+    // پیدا کردن جای جدید گزینهٔ درست
+    currentCorrectIndex = shuffled.findIndex(opt => opt.originalIndex === stageData.correct);
 
-    shopBtn.onclick = ()=>{ if(!turnInProgress && !gameOver) shopOverlay.style.display="flex"; };
-    closeShopBtn.onclick = ()=>shopOverlay.style.display="none";
-    shopOverlay.addEventListener("click",e=>{
-      if(e.target===shopOverlay) shopOverlay.style.display="none";
+    // ساخت دکمه‌ها براساس گزینه‌های شافل شده
+    optionsContainer.innerHTML = "";
+    shuffled.forEach((opt, btnIndex) => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.textContent = opt.text;
+      btn.addEventListener("click", () => handleAnswer(btnIndex));
+      optionsContainer.appendChild(btn);
     });
 
-    document.querySelectorAll(".shopItem button").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const item = btn.getAttribute("data-item");
-        let cost = 0;
-        if(item === "balls") cost = 450;
-        else if(item === "damage") cost = 750;
-        else if(item === "bomb") cost = 600;
+    startTimerForStage(game);
+  }
 
-        if(score < cost){
-          showShopMsg("امتیاز کافی نداری 😅");
-          playBeep(200,0.1);
-          return;
-        }
+  // ---- پاسخ کاربر ----
+  let answeringLocked = false;
 
-        score -= cost;
-        if(item==="balls"){
-          numBalls += 3;
-          flashHint("۳ توپ به مجموعه‌ات اضافه شد 🎯");
-        }else if(item==="damage"){
-          damagePerHit += 1;
-          flashHint("قدرت توپ‌ها بیشتر شد 🔥");
-        }else if(item==="bomb"){
-          bombChance += 0.03;
-          flashHint("شانس بلوک‌های بمب بالاتر رفت 💣");
-        }
+  function handleAnswer(index) {
+    if (answeringLocked) return;
+    const game = gamesData.find(g => g.id === state.currentGameId);
+    if (!game) return;
 
-        const row = document.querySelector(`.shopItem[data-item-row="${item}"]`);
-        if(row){
-          row.classList.add("bought");
-          setTimeout(()=>row.classList.remove("bought"), 300);
-        }
+    clearInterval(timerInterval);
 
-        showShopMsg("خرید با موفقیت انجام شد ✅");
-        playBeep(900,0.12);
-        updateLabels();
-      });
+    const optionButtons = Array.from(document.querySelectorAll(".option-btn"));
+    answeringLocked = true;
+
+    // پاک کردن حالت‌های قبلی
+    optionButtons.forEach(btn => {
+      btn.classList.remove("correct", "wrong");
     });
 
-    // درباره ما
-    aboutBtn.onclick = ()=>{aboutOverlay.style.display="flex";};
-    closeAboutBtn.onclick = ()=>{aboutOverlay.style.display="none";};
-    aboutOverlay.addEventListener("click",e=>{
-      if(e.target===aboutOverlay) aboutOverlay.style.display="none";
+    const isCorrect = (index === currentCorrectIndex);
+
+    if (isCorrect) {
+      // فقط همان گزینه‌ای که کاربر زده سبز شود
+      optionButtons[index].classList.add("correct");
+
+      state.gameStars += 1;
+      state.totalStars += 1;
+      pulse(starStatEl, "bounce");
+
+      // مربی: حالت پاسخ درست
+      setCoachState("correct");
+
+      setTimeout(() => {
+        state.currentStage++;
+        if (state.currentStage >= game.stages.length) {
+          // مربی: تمام شدن بازی
+          setCoachState("gameComplete");
+          unlockNextGame();
+          showModal(
+            "آفرین قهرمان! 🎉",
+            "تمام مراحل این بازی رو رد کردی.\nمی‌تونی بازی بعدی رو هم امتحان کنی."
+          );
+          backToList();
+        } else {
+          updateGameUi();
+        }
+        updateGlobalStats();
+        answeringLocked = false;
+      }, 700);
+
+    } else {
+      // فقط همان گزینه‌ای که کاربر زده قرمز شود
+      optionButtons[index].classList.add("wrong");
+
+      state.hearts -= 1;
+      pulse(heartStatEl, "shake");
+
+      // مربی: حالت پاسخ غلط
+      setCoachState("wrong");
+
+      setTimeout(() => {
+        if (state.hearts <= 0) {
+          // مربی: گیم اور
+          setCoachState("gameOver");
+          showModal(
+            "جان‌هات تموم شد 😅",
+            "نگران نباش؛ می‌تونی با دکمه «شروع مجدد بازی» کل بازی رو از اول شروع کنی."
+          );
+          resetCurrentGameOnly();
+        } else {
+          updateGameUi();
+        }
+        updateGlobalStats();
+        answeringLocked = false;
+      }, 700);
+    }
+  }
+
+  function handleTimeout() {
+    if (answeringLocked) return;
+    answeringLocked = true;
+    state.hearts -= 1;
+    pulse(heartStatEl, "shake");
+
+    // مربی: حالت اتمام زمان
+    setCoachState("timeout");
+
+    setTimeout(() => {
+      if (state.hearts <= 0) {
+        setCoachState("gameOver");
+        showModal(
+          "زمانت تموم شد 😅",
+          "همه‌ی جان‌هات رفت. با «شروع مجدد بازی» می‌تونی کل بازی رو از صفر شروع کنی."
+        );
+        resetCurrentGameOnly();
+      } else {
+        updateGameUi();
+      }
+      updateGlobalStats();
+      answeringLocked = false;
+    }, 700);
+  }
+
+  function pulse(el, className) {
+    el.classList.remove(className);
+    void el.offsetWidth;
+    el.classList.add(className);
+    setTimeout(() => el.classList.remove(className), 450);
+  }
+
+  function resetCurrentGameOnly() {
+    const game = gamesData.find(g => g.id === state.currentGameId);
+    if (!game) return;
+    clearInterval(timerInterval);
+    state.hearts = 3;
+    state.gameStars = 0;
+    state.currentStage = 0;
+    // وقتی از اول شروع می‌کند، مربی دوباره حالت start بگیرد
+    setCoachState("start");
+    updateGameUi();
+  }
+
+  function unlockNextGame() {
+    const currentIndex = gamesData.findIndex(g => g.id === state.currentGameId);
+    if (currentIndex >= 0 && currentIndex < gamesData.length - 1) {
+      const nextGame = gamesData[currentIndex + 1];
+      if (nextGame) {
+        nextGame.locked = false;
+        state.unlockedGames.add(nextGame.id);
+      }
+      renderGamesList();
+    }
+  }
+
+  function updateGlobalStats() {
+    totalStarsEl.textContent = state.totalStars.toString();
+    gameStarsEl.textContent = state.gameStars.toString();
+    heartsCountEl.textContent = state.hearts.toString();
+  }
+
+  // ---- ریست کامل بازی ----
+  function resetAllGameProgress() {
+    clearInterval(timerInterval);
+    state.totalStars = 0;
+    state.unlockedGames = new Set([1]);
+    state.currentGameId = null;
+    state.currentStage = 0;
+    state.hearts = 3;
+    state.gameStars = 0;
+
+    gamesData.forEach((g, index) => {
+      if (index === 0) {
+        g.locked = false;
+      } else {
+        g.locked = true;
+      }
     });
 
-    function applyPowerUp(type){
-      if(type==="extraBall"){
-        numBalls += 2;
-        flashHint("۲ توپ جایزه گرفتی! 😍");
-      }else if(type==="damageUp"){
-        damagePerHit += 1;
-        flashHint("قدرت ضربه توپ‌ها بیشتر شد 🔥");
-      }else if(type==="bombUp"){
-        bombChance += 0.03;
-        flashHint("از حالا بمب‌ها بیشتر می‌شن 💣");
-      }
-      playBeep(900,0.1);
-    }
+    updateGlobalStats();
+    backToList();
+  }
 
-    pauseBtn.onclick = ()=>{
-      if(gameOver) return;
-      isPaused = !isPaused;
-      pauseBtn.textContent = isPaused ? "▶️" : "⏸";
-      flashHint(isPaused ? "بازی متوقف شد ⏸" : "ادامه بازی ▶️");
-    };
+  // ---- برگشت به فهرست ----
+  function backToList() {
+    clearInterval(timerInterval);
+    state.currentGameId = null;
+    gameScreen.classList.add("hidden");
+    gamesScreen.classList.remove("hidden");
+    currentGameLabel.textContent = "-";
+    currentStageLabel.textContent = "-";
+    renderGamesList();
+  }
+  backToListBtn.addEventListener("click", backToList);
 
-    soundBtn.onclick = ()=>{
-      isMuted = !isMuted;
-      soundBtn.textContent = isMuted ? "🔇" : "🔊";
-    };
+  // ---- شروع مجدد از فوتر (ریست کامل) ----
+  restartBtn.addEventListener("click", resetAllGameProgress);
 
-    retryBtn.onclick = ()=>{
-      gameOverOverlay.style.display = "none";
-      resetGame();
-    };
-    gameOverOverlay.addEventListener("click", e=>{
-      if(e.target === gameOverOverlay){
-        gameOverOverlay.style.display="none";
-        resetGame();
-      }
-    });
+  // ---- پاپ‌آپ‌ها ----
+  function showModal(title, body) {
+    modalTitle.textContent = title;
+    modalBody.textContent = body;
+    modalBackdrop.classList.add("active");
+  }
+  function hideModal() {
+    modalBackdrop.classList.remove("active");
+  }
+  modalCloseBtn.addEventListener("click", hideModal);
+  modalBackdrop.addEventListener("click", (e) => {
+    if (e.target === modalBackdrop) hideModal();
+  });
 
-    function update(){
-      frame++;
+  // دستاوردها به شکل آیتمی و جذاب
+  achievementsBtn.addEventListener("click", () => {
+    const unlockedCount = state.unlockedGames.size;
+    const currentGame = gamesData.find(g => g.id === state.currentGameId);
+    const currentGameTitle = currentGame ? currentGame.title : "—";
+    const currentStageHuman = currentGame ? state.currentStage + 1 : "—";
 
-      for(const b of blocks){
-        if(b.type==="moving" && b.alive){
-          b.x += b.vx;
-          if(b.x<=padding || b.x+b.w>=canvas.width-padding) b.vx*=-1;
-        }
-      }
+    const body =
+      `نام بازیکن: ${state.userName}\n` +
+      `امتیاز کل: ${state.totalStars}\n` +
+      `بازی فعلی: ${currentGameTitle}\n` +
+      `مرحله فعلی: ${currentStageHuman}\n` +
+      `بازی‌های باز شده: ${unlockedCount} از ۶\n\n` +
+      `🔥 هر جواب درست = یک ستاره.\n` +
+      `🎯 سعی کن رکورد امتیازت رو هر بار بهتر کنی!`;
 
-      for(const p of powerUps){
-        if(!p.collected) p.y += 0.15;
-      }
+    showModal("خلاصهٔ پیشرفتت تا الان", body);
+  });
 
-      let activeAny=false;
-      for(const ball of balls){
-        if(!ball.active && frame>=ball.delay) ball.active=true;
-        if(!ball.active || ball.returned) continue;
-        activeAny=true;
+  helpBtn.addEventListener("click", () => {
+    showModal(
+      "راهنمای بازی",
+      "۱) از فهرست، یک بازی رو انتخاب کن.\n" +
+      "۲) در هر مرحله، جواب درست رو انتخاب کن.\n" +
+      "۳) هر جواب درست = یک ستاره.\n" +
+      "۴) با سه اشتباه یا اتمام زمان، جان‌ها تموم می‌شن و بازی از اول شروع می‌شه.\n" +
+      "۵) با تمام کردن هر بازی، بازی بعدی باز می‌شه.\n" +
+      "۶) اگر خواستی همه‌چیز رو از صفر شروع کنی، از دکمه «شروع مجدد بازی» استفاده کن."
+    );
+  });
 
-        ball.x += ball.vx;
-        ball.y += ball.vy;
+  aboutBtn.addEventListener("click", () => {
+    showModal(
+      "درباره تاویتا",
+      "بازی‌های هوشیتا برای تمرین مغز، تمرکز، سرعت ذهن و حافظه طراحی شده.\n" +
+      "این برنامه توسط تیم تاویتا ساخته شده تا تمرین، شبیه یک بازی قشنگ و دوست‌داشتنی باشه."
+    );
+  });
 
-        trails.push({x:ball.x,y:ball.y,life:18});
-
-        if(ball.x<=4 || ball.x>=canvas.width-4){
-          ball.vx*=-1;
-          ball.x = Math.max(4,Math.min(canvas.width-4,ball.x));
-        }
-        if(ball.y<=4){
-          ball.vy*=-1;
-          ball.y=4;
-        }
-
-        for(const b of blocks){
-          if(!b.alive) continue;
-          if(ball.x>b.x && ball.x<b.x+b.w && ball.y>b.y && ball.y<b.y+b.h){
-            const ol = ball.x - b.x;
-            const orr = (b.x+b.w)-ball.x;
-            const ot = ball.y - b.y;
-            const ob = (b.y+b.h)-ball.y;
-            const minO = Math.min(ol,orr,ot,ob);
-            if(minO===ol || minO===orr) ball.vx*=-1;
-            else ball.vy*=-1;
-
-            if(b.type==="ice" && b.hpExtra>0){
-              b.hpExtra--;
-              if(b.hpExtra===0){b.type="normal";b.color=pickColor(b.type,b.value);}
-            }else if(b.type==="armor" && b.hpExtra>0){
-              b.hpExtra--;
-            }else{
-              b.value -= damagePerHit;
-            }
-
-            if(b.value<=0){
-              b.alive=false;
-              score+=3;
-              playBeep(430,0.08);
-              if(b.type==="bomb"){
-                shake=10;
-                for(const nb of blocks){
-                  if(!nb.alive||nb===b) continue;
-                  const dx = Math.abs((nb.x+nb.w/2)-(b.x+b.w/2));
-                  const dy = Math.abs((nb.y+nb.h/2)-(b.y+b.h/2));
-                  if(dx<b.w*1.3 && dy<b.h*1.3){
-                    nb.value -= damagePerHit*2;
-                    if(nb.value<=0) nb.alive=false;
-                  }
-                }
-              }
-            }else{
-              b.color = pickColor(b.type,b.value);
-              score+=1;
-            }
-
-            if(score>bestScore) bestScore=score;
-            updateLabels();
-          }
-        }
-
-        for(const p of powerUps){
-          if(p.collected) continue;
-          const dx = ball.x - p.x;
-          const dy = ball.y - p.y;
-          if(Math.sqrt(dx*dx+dy*dy) < p.r+6){
-            p.collected=true;
-            applyPowerUp(p.type);
-          }
-        }
-
-        if(ball.y>=canvas.height-6 && ball.vy>0){
-          ball.returned=true;
-        }
-      }
-
-      trails = trails.filter(t=>--t.life>0);
-      blocks = blocks.filter(b=>b.alive);
-      powerUps = powerUps.filter(p=>!p.collected && p.y<canvas.height-30);
-
-      if(turnInProgress && !activeAny){
-        turnInProgress = false;
-        frame = 0;
-        waves++;
-
-        if(waves % 5 === 0){
-          level++;
-          flashHint("🎉 مرحله " + level + " شروع شد! سخت‌تر شد…");
-          playBeep(1100, 0.17);
-        }
-
-        moveBlocksDown();
-        spawnRow();
-
-        for(const b of blocks){
-          if(b.y + b.h >= canvas.height - 20){
-            playBeep(200, 0.4);
-            if(score > bestScore) bestScore = score;
-            updateLabels();
-            gameOver = true;
-            gameOverScoreText.textContent = "امتیاز شما: " + score;
-            gameOverBestText.textContent = "بهترین رکورد: " + bestScore;
-            gameOverOverlay.style.display = "flex";
-            return;
-          }
-        }
-
-        updateLabels();
-      }
-
-      if(shake>0) shake--;
-    }
-
-    function draw(){
-      const rnd = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
-      const ox = shake? rnd(-shake,shake):0;
-      const oy = shake? rnd(-shake,shake):0;
-      ctx.save();
-      ctx.translate(ox,oy);
-      ctx.clearRect(-ox,-oy,canvas.width,canvas.height);
-
-      const grad = ctx.createLinearGradient(0,0,0,canvas.height);
-      grad.addColorStop(0,"#1a1450");
-      grad.addColorStop(1,"#09051f");
-      ctx.fillStyle=grad;
-      ctx.fillRect(0,0,canvas.width,canvas.height);
-
-      ctx.textAlign="center";
-      ctx.textBaseline="middle";
-      ctx.font="bold 14px sans-serif";
-      for(const b of blocks){
-        ctx.fillStyle="rgba(0,0,0,0.4)";
-        ctx.fillRect(b.x+2,b.y+3,b.w,b.h);
-        const g = ctx.createLinearGradient(b.x,b.y,b.x,b.y+b.h);
-        g.addColorStop(0,b.color);
-        g.addColorStop(1,"#ffffff22");
-        ctx.fillStyle=g;
-        ctx.fillRect(b.x,b.y,b.w,b.h);
-        ctx.strokeStyle="#ffffff33";
-        ctx.lineWidth=1;
-        ctx.strokeRect(b.x+0.5,b.y+0.5,b.w-1,b.h-1);
-        ctx.fillStyle="#fff";
-        ctx.fillText(Math.max(1,Math.round(b.value)), b.x+b.w/2, b.y+b.h/2);
-      }
-
-      for(const p of powerUps){
-        let colorOuter="#4cffb5";
-        let text="B";
-        if(p.type==="extraBall"){ colorOuter="#1abc9c"; text="+B"; }
-        else if(p.type==="damageUp"){ colorOuter="#ff9f43"; text="DMG"; }
-        else if(p.type==="bombUp"){ colorOuter="#9b59b6"; text="BOMB"; }
-
-        ctx.beginPath();
-        const g2 = ctx.createRadialGradient(p.x,p.y,2,p.x,p.y,p.r+4);
-        g2.addColorStop(0,"#ffffff");
-        g2.addColorStop(1,colorOuter);
-        ctx.fillStyle=g2;
-        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fill();
-        ctx.strokeStyle="#ffffffaa";
-        ctx.lineWidth=1;
-        ctx.stroke();
-
-        ctx.fillStyle="#003";
-        ctx.font="9px sans-serif";
-        ctx.fillText(text,p.x,p.y+0.5);
-      }
-
-      for(const t of trails){
-        ctx.beginPath();
-        const alpha = t.life/18;
-        ctx.fillStyle=`rgba(255,255,255,${alpha})`;
-        ctx.arc(t.x,t.y,3,0,Math.PI*2);
-        ctx.fill();
-      }
-
-      ctx.fillStyle="#ffffff";
-      for(const ball of balls){
-        if(!ball.active || ball.returned) continue;
-        ctx.beginPath();
-        ctx.arc(ball.x,ball.y,4,0,Math.PI*2);
-        ctx.fill();
-      }
-
-      ctx.beginPath();
-      ctx.arc(baseX,baseY,6,0,Math.PI*2);
-      ctx.fillStyle="#ffffff";
-      ctx.fill();
-
-      if(!turnInProgress && isAiming){
-        ctx.setLineDash([5,5]);
-        ctx.strokeStyle="#ffffffbb";
-        ctx.beginPath();
-        ctx.moveTo(baseX,baseY);
-        ctx.lineTo(aimX,aimY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-      }
-
-      ctx.restore();
-    }
-
-    function loop(){
-      if(!isPaused && !gameOver){
-        update();
-      }
-      draw();
-      requestAnimationFrame(loop);
-    }
-    loop();
-  </script>
+  // شروع اولیه
+  initUser();
+  if (!onboardBackdrop.classList.contains("active")) {
+    renderGamesList();
+  }
+</script>
 </body>
 </html>
