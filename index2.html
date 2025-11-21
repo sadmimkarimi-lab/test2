@@ -141,32 +141,32 @@ body{
 
 canvas{
   width:100%;
-  max-width:380px;
+  max-width:420px;      /* بازی پهن‌تر روی موبایل */
   background:#16103f;
   border-radius:14px;
   box-shadow:0 0 18px rgba(0,0,0,.7);
-  margin-top:4px;
+  margin-top:8px;
 }
 
-/* ───────── پیام پایین ───────── */
 
-#bottom-bar{
+
+#hint-bar{
   width:100%;
   max-width:900px;
-  padding:8px 16px 16px;
+  padding:8px 16px 0;
   display:flex;
   justify-content:center;
 }
 
 #hint{
   width:100%;
-  background:#1f2937;
-  padding:10px 16px;
-  border-radius:999px;
+  background:#111827;
+  padding:10px 14px;
+  border-radius:12px;
   font-size:14px;
   direction:rtl;
   text-align:right;
-  opacity:.9;
+  opacity:.95;
 }
 
 /* ───────── پاپ‌آپ‌ها ───────── */
@@ -330,15 +330,16 @@ canvas{
   </div>
 </div>
 
+ <div id="bottom-bar">
+    <div id="hint">برای هدف‌گیری لمس کن و زاویه را انتخاب کن 🎯</div>
+  </div>
+  
   <!-- بازی -->
   <div id="game-container">
     <canvas id="game"></canvas>
   </div>
 
-  <!-- پیام پایین -->
-  <div id="bottom-bar">
-    <div id="hint">برای هدف‌گیری لمس کن و زاویه را انتخاب کن 🎯</div>
-  </div>
+  
 
   <!-- شاپ -->
   <div id="shopOverlay" class="overlay">
@@ -411,13 +412,13 @@ canvas{
 
     let baseX, baseY;
     function resizeCanvas(){
-      const w = Math.min(window.innerWidth * 0.98, 420);
-      const h = Math.min(window.innerHeight * 0.75, 700);
-      canvas.width = w;
-      canvas.height = h;
-      baseX = canvas.width / 2;
-      baseY = canvas.height - 20;
-    }
+  const w = Math.min(window.innerWidth * 0.97, 460);  // کمی عریض‌تر
+  const h = Math.min(window.innerHeight * 0.70, 720); // قد بازی هم کمی بیشتر
+  canvas.width = w;
+  canvas.height = h;
+  baseX = canvas.width / 2;
+  baseY = canvas.height - 22;
+}
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
