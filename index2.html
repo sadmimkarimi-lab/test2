@@ -588,52 +588,52 @@ canvas{
     }
 
     function getCanvasPos(evt){
-      const rect = canvas.getBoundingClientRect();
-      let clientX, clientY;
-      if(evt.touches && evt.touches[0]){
-        clientX = evt.touches[0].clientX;
-        clientY = evt.touches[0].clientY;
-      }else if(evt.changedTouches && evt.changedTouches[0]){
-        clientX = evt.changedTouches[0].clientX;
-        clientY = evt.changedTouches[0].clientY;
-      }else{
-        clientX = evt.clientX;
-        clientY = evt.clientY;
-      }
-      const x = (clientX - rect.left) * (canvas.width / rect.width);
-      const y = (clientY - rect.top)  * (canvas.height / rect.height);
-      return {x,y};
-    }
+  const rect = canvas.getBoundingClientRect();
+  let clientX, clientY;
+  if(evt.touches && evt.touches[0]){
+    clientX = evt.touches[0].clientX;
+    clientY = evt.touches[0].clientY;
+  }else if(evt.changedTouches && evt.changedTouches[0]){
+    clientX = evt.changedTouches[0].clientX;
+    clientY = evt.changedTouches[0].clientY;
+  }else{
+    clientX = evt.clientX;
+    clientY = evt.clientY;
+  }
+  const x = (clientX - rect.left) * (canvas.width / rect.width);
+  const y = (clientY - rect.top)  * (canvas.height / rect.height);
+  return {x,y};
+}
 
-    let isAiming = false;
-    function startAim(evt){
-      if(turnInProgress || isPaused || gameOver) return;
-      isAiming=true;
-      const p = getCanvasPos(evt);
-      aimX=p.x; aimY=p.y;
-    }
-    function moveAim(evt){
-      if(!isAiming || isPaused || gameOver) return;
-      const p = getCanvasPos(evt);
-      aimX=p.x; aimY=p.y;
-    }
-    function endAim(){
-      if(!isAiming || isPaused || gameOver) return;
-      isAiming=false;
-      let angle = Math.atan2(aimY-baseY, aimX-baseX);
-      if(angle>-0.15) angle=-0.15;
-      if(angle<-Math.PI+0.15) angle=-Math.PI+0.15;
-      shoot(angle);
-    }
+function startAim(evt){
+  if(turnInProgress || isPaused || gameOver) return;
+  isAiming=true;
+  const p = getCanvasPos(evt);
+  aimX=p.x; aimY=p.y;
+}
 
-    canvas.addEventListener("mousedown", e=>startAim(e));
-    canvas.addEventListener("mousemove", e=>moveAim(e));
-    canvas.addEventListener("mouseup",   ()=>endAim());
+function moveAim(evt){
+  if(!isAiming || isPaused || gameOver) return;
+  const p = getCanvasPos(evt);
+  aimX=p.x; aimY=p.y;
+}
 
-    canvas.addEventListener("touchstart", e=>{startAim(e); e.preventDefault();},{passive:false});
-    canvas.addEventListener("touchmove",  e=>{moveAim(e); e.preventDefault();},{passive:false});
-    canvas.addEventListener("touchend",   e=>{endAim();  e.preventDefault();},{passive:false});
+function endAim(){
+  if(!isAiming || isPaused || gameOver) return;
+  isAiming=false;
+  let angle = Math.atan2(aimY-baseY, aimX-baseX);
+  if(angle>-0.15) angle=-0.15;
+  if(angle<-Math.PI+0.15) angle=-Math.PI+0.15;
+  shoot(angle);
+}
 
+canvas.addEventListener("mousedown", e=>startAim(e));
+canvas.addEventListener("mousemove", e=>moveAim(e));
+canvas.addEventListener("mouseup",   ()=>endAim());
+
+canvas.addEventListener("touchstart", e=>{startAim(e); e.preventDefault();},{passive:false});
+canvas.addEventListener("touchmove",  e=>{moveAim(e); e.preventDefault();},{passive:false});
+canvas.addEventListener("touchend",   e=>{endAim();  e.preventDefault();},{passive:false});
     function showShopMsg(text){
       shopMessage.textContent = text;
       shopMessage.classList.remove("shopMessageVisible");
