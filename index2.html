@@ -6,274 +6,288 @@
   <title>توپ‌بارون</title>
 
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Vazirmatn',sans-serif;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Vazirmatn',sans-serif;
+}
 
-    body{
-      background:#0f0d33;
-      color:#fff;
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      overflow-x:hidden;
-    }
+body{
+  background:#0f0d33;
+  color:#fff;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  overflow-x:hidden;
+}
 
-    /* ───────────── ردیف بالایی: لوگو / منو ───────────── */
-    #top-bar{
-      width:100%;
-      max-width:900px;
-      padding:12px 16px 4px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-    }
+/* ───────── ردیف بالایی: منو + لوگو ───────── */
 
-    /* چپ: شاپ + درباره ما */
-    #top-left{
-      display:flex;
-      gap:10px;
-    }
-    .topBtn{
-      border:none;
-      padding:8px 16px;
-      font-size:14px;
-      border-radius:999px;
-      cursor:pointer;
-      color:#fff;
-      background:#ff8c00;
-      box-shadow:0 0 6px rgba(0,0,0,.4);
-      white-space:nowrap;
-    }
-    #aboutBtn{
-      background:#1abc9c;
-    }
+#top-bar{
+  width:100%;
+  max-width:900px;
+  padding:12px 16px 4px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
 
-    /* راست: لوگو + عنوان توپ‌بارون */
-    #top-right{
-      display:flex;
-      justify-content:flex-end;
-      flex:1;
-    }
-    #logoArea{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      direction:rtl;
-    }
-    #gameLogo{
-      width:48px;
-      height:48px;
-      border-radius:999px;
-      object-fit:cover;
-      box-shadow:0 0 8px rgba(0,0,0,.5);
-    }
-    #gameTitle{
-      font-size:20px;
-      font-weight:800;
-      white-space:nowrap;
-    }
+/* چپ: شاپ + درباره ما */
+#top-left{
+  display:flex;
+  gap:10px;
+}
+.topBtn{
+  border:none;
+  padding:8px 16px;
+  font-size:14px;
+  border-radius:999px;
+  cursor:pointer;
+  color:#fff;
+  background:#ff8c00;
+  box-shadow:0 0 6px rgba(0,0,0,.4);
+  white-space:nowrap;
+}
+#aboutBtn{
+  background:#1abc9c;
+}
 
-    /* ───────────── ردیف وضعیت: BEST / LVL / Score / آیکون‌ها ───────────── */
-    #status-bar{
-      width:100%;
-      max-width:900px;
-      padding:0 16px 8px;
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:center;
-      gap:14px;
-      text-align:center;
-    }
+/* راست: لوگو + عنوان */
+#top-right{
+  display:flex;
+  justify-content:flex-end;
+  flex:1;
+}
+#logoArea{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  direction:rtl;
+}
+#gameLogo{
+  width:48px;
+  height:48px;
+  border-radius:999px;
+  object-fit:cover;
+  box-shadow:0 0 8px rgba(0,0,0,.5);
+}
+#gameTitle{
+  font-size:20px;
+  font-weight:800;
+  white-space:nowrap;
+}
 
-    #stats-row{
-      display:flex;
-      gap:16px;
-      font-size:14px;
-      white-space:nowrap;
-    }
+/* ───────── ردیف وضعیت: BEST / LVL / امتیاز / دکمه‌ها ───────── */
 
-    #scoreLabel{
-      font-size:20px;
-      font-weight:700;
-      white-space:nowrap;
-    }
+#status-bar{
+  width:100%;
+  max-width:900px;
+  padding:0 16px 8px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    #icons-row{
-      display:flex;
-      gap:8px;
-    }
-    .iconBtn{
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:18px;
-      background:#262a7a;
-      color:#fff;
-      border:none;
-      box-shadow:0 0 5px rgba(0,0,0,.4);
-      cursor:pointer;
-    }
+#status-inner{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:16px;
+  flex-wrap:nowrap;
+}
 
-    /* ───────────── بازی / کانواس ───────────── */
-    #game-container{
-      width:100%;
-      max-width:900px;
-      flex:1;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:0 12px;
-    }
+#stats-row{
+  display:flex;
+  gap:10px;
+  font-size:14px;
+  white-space:nowrap;
+}
 
-    canvas{
-      width:100%;
-      max-width:380px;
-      background:#16103f;
-      border-radius:14px;
-      box-shadow:0 0 18px rgba(0,0,0,.7);
-      margin-top:4px;
-    }
+#scoreLabel{
+  font-size:20px;
+  font-weight:700;
+  white-space:nowrap;
+}
 
-    /* ───────────── پیام پایین ───────────── */
-    #bottom-bar{
-      width:100%;
-      max-width:900px;
-      padding:8px 16px 16px;
-      display:flex;
-      justify-content:center;
-    }
+#icons-row{
+  display:flex;
+  gap:8px;
+}
+.iconBtn{
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:18px;
+  background:#262a7a;
+  color:#fff;
+  border:none;
+  box-shadow:0 0 5px rgba(0,0,0,.4);
+  cursor:pointer;
+}
 
-    #hint{
-      width:100%;
-      background:#1f2937;
-      padding:10px 16px;
-      border-radius:999px;
-      font-size:14px;
-      direction:rtl;
-      text-align:right;
-      opacity:.9;
-    }
+/* ───────── بازی / کانواس ───────── */
 
-    /* ───────────── پاپ‌آپ‌ها (شاپ / درباره / گیم‌اور) ───────────── */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.7);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:10;
-    }
+#game-container{
+  width:100%;
+  max-width:900px;
+  flex:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:0 12px;
+}
 
-    .box{
-      background:#1e124f;
-      padding:16px;
-      border-radius:16px;
-      width:90%;
-      max-width:380px;
-      text-align:right;
-      direction:rtl;
-      font-size:13px;
-      line-height:1.7;
-      color:#f9fafb;
-      box-shadow:0 0 18px rgba(0,0,0,.8);
-      position:relative;
-    }
+canvas{
+  width:100%;
+  max-width:380px;
+  background:#16103f;
+  border-radius:14px;
+  box-shadow:0 0 18px rgba(0,0,0,.7);
+  margin-top:4px;
+}
 
-    .box h3{
-      margin-bottom:8px;
-      font-size:16px;
-    }
+/* ───────── پیام پایین ───────── */
 
-    .closeBtn{
-      width:100%;
-      border:none;
-      padding:7px 14px;
-      border-radius:999px;
-      background:#4444aa;
-      color:#fff;
-      margin-top:10px;
-      cursor:pointer;
-      box-shadow:0 0 8px rgba(0,0,0,.5);
-    }
-    .closeBtn:active{
-      transform:scale(.97);
-    }
+#bottom-bar{
+  width:100%;
+  max-width:900px;
+  padding:8px 16px 16px;
+  display:flex;
+  justify-content:center;
+}
 
-    .shopItem{
-      background:#24145f;
-      padding:8px;
-      border-radius:10px;
-      margin:6px 0;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:13px;
-      transition:transform .15s ease, box-shadow .15s ease;
-    }
-    .shopItem span{
-      display:block;
-    }
-    .shopItem button{
-      padding:4px 10px;
-      border:0;
-      border-radius:999px;
-      background:#ff8c00;
-      color:white;
-      cursor:pointer;
-      font-size:11px;
-    }
-    .shopItem.bought{
-      transform:scale(1.03);
-      box-shadow:0 0 14px rgba(46,204,113,.8);
-    }
+#hint{
+  width:100%;
+  background:#1f2937;
+  padding:10px 16px;
+  border-radius:999px;
+  font-size:14px;
+  direction:rtl;
+  text-align:right;
+  opacity:.9;
+}
 
-    #shopMessage{
-      position:absolute;
-      top:4px;
-      left:12px;
-      font-size:11px;
-      color:#2ecc71;
-      opacity:0;
-      pointer-events:none;
-    }
-    .shopMessageVisible{
-      animation:shopFlash 1s ease-out forwards;
-    }
-    @keyframes shopFlash{
-      0%{opacity:0;transform:translateY(-4px);}
-      20%{opacity:1;transform:translateY(0);}
-      80%{opacity:1;}
-      100%{opacity:0;transform:translateY(-6px);}
-    }
+/* ───────── پاپ‌آپ‌ها ───────── */
 
-    .linkButton{
-      display:inline-block;
-      margin-top:10px;
-      padding:6px 14px;
-      border-radius:999px;
-      text-decoration:none;
-      font-size:12px;
-      background:#1abc9c;
-      color:#fff;
-      box-shadow:0 0 10px rgba(0,0,0,.5);
-    }
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
 
-    /* ───────────── موبایل ───────────── */
-    @media(max-width:480px){
-      #gameLogo{width:42px;height:42px;}
-      #gameTitle{font-size:18px;}
-      canvas{max-width:330px;}
-      #scoreLabel{font-size:18px;}
-      .topBtn{padding:6px 12px;font-size:13px;}
-    }
-  </style>
+.box{
+  background:#1e124f;
+  padding:16px;
+  border-radius:16px;
+  width:90%;
+  max-width:380px;
+  text-align:right;
+  direction:rtl;
+  font-size:13px;
+  line-height:1.7;
+  color:#f9fafb;
+  box-shadow:0 0 18px rgba(0,0,0,.8);
+  position:relative;
+}
+
+.box h3{
+  margin-bottom:8px;
+  font-size:16px;
+}
+
+.closeBtn{
+  width:100%;
+  border:none;
+  padding:7px 14px;
+  border-radius:999px;
+  background:#4444aa;
+  color:#fff;
+  margin-top:10px;
+  cursor:pointer;
+  box-shadow:0 0 8px rgba(0,0,0,.5);
+}
+.closeBtn:active{
+  transform:scale(.97);
+}
+
+/* آیتم‌های شاپ */
+.shopItem{
+  background:#24145f;
+  padding:8px;
+  border-radius:10px;
+  margin:6px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:13px;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.shopItem span{
+  display:block;
+}
+.shopItem button{
+  padding:4px 10px;
+  border:0;
+  border-radius:999px;
+  background:#ff8c00;
+  color:white;
+  cursor:pointer;
+  font-size:11px;
+}
+.shopItem.bought{
+  transform:scale(1.03);
+  box-shadow:0 0 14px rgba(46,204,113,.8);
+}
+
+#shopMessage{
+  position:absolute;
+  top:4px;
+  left:12px;
+  font-size:11px;
+  color:#2ecc71;
+  opacity:0;
+  pointer-events:none;
+}
+.shopMessageVisible{
+  animation:shopFlash 1s ease-out forwards;
+}
+@keyframes shopFlash{
+  0%{opacity:0;transform:translateY(-4px);}
+  20%{opacity:1;transform:translateY(0);}
+  80%{opacity:1;}
+  100%{opacity:0;transform:translateY(-6px);}
+}
+
+/* دکمه لینک در درباره‌ما */
+.linkButton{
+  display:inline-block;
+  margin-top:10px;
+  padding:6px 14px;
+  border-radius:999px;
+  text-decoration:none;
+  font-size:12px;
+  background:#1abc9c;
+  color:#fff;
+  box-shadow:0 0 10px rgba(0,0,0,.5);
+}
+
+/* ───────── موبایل ───────── */
+
+@media(max-width:480px){
+  #gameLogo{width:42px;height:42px;}
+  #gameTitle{font-size:18px;}
+  canvas{max-width:330px;}
+  #scoreLabel{font-size:18px;}
+  .topBtn{padding:6px 12px;font-size:13px;}
+  #status-inner{gap:10px;}
+}
+</style>
 </head>
 
 <body>
@@ -299,6 +313,7 @@
 
   <!-- ردیف وضعیت: BEST / LVL / امتیاز / آیکون‌ها -->
   <div id="status-bar">
+  <div id="status-inner">
     <div id="stats-row">
       <span>BEST: <span id="bestScore">0</span></span>
       <span>LVL: <span id="levelLabel">1</span></span>
@@ -313,6 +328,7 @@
       <button id="pauseBtn" class="iconBtn">⏸</button>
     </div>
   </div>
+</div>
 
   <!-- بازی -->
   <div id="game-container">
